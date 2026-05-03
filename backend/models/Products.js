@@ -35,11 +35,11 @@ export const Product = sequelize.define(
   },
   disponibilidad: {
     type: DataTypes.BOOLEAN,
-    default: false,
+    defaultValue: false,
   },
   oferta: {
     type: DataTypes.BOOLEAN,
-    default: false,
+    defaultValue: false,
   },
 },
 {
