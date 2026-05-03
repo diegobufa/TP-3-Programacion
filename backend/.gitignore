@@ -10,3 +10,4 @@ Thumbs.db
 *.sqlite
 *.sqlite3
 database.sqlite
+!products.db
