@@ -1,15 +1,45 @@
-import { User } from "../../models/Users.js";
+import { Usuario } from "../../models/Usuario.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
-  const {nombre, apellido, direccion, usuario, telefono, email, password } = req.body;
-  const user = await User.findOne({ where: { email } });
+  const {
+    nombre,
+    apellido,
+    usuario,
+    telefono,
+    email,
+    password,
+    provincia,
+    localidad,
+    calle,
+    altura,
+    piso,
+    departamento,
+    fk_rol,
+  } = req.body;
+
+  const user = await Usuario.findOne({ where: { email } });
   if (user) return res.status(400).send({ message: "Usuario existente" });
   const saltRounds = 10;
 
   const hashedPassword = await bcrypt.hash(password, saltRounds);
-  const newUser = await User.create({ nombre, apellido, direccion, usuario, telefono, email, password: hashedPassword });
+  
+  const newUser = await User.create({
+     nombre,
+      apellido,
+      usuario,
+      telefono,
+      email,
+      password: hashedPassword,
+      provincia,
+      localidad,
+      calle,
+      altura,
+      piso,
+      departamento,
+      fk_rol
+  });
 
   res.json(newUser.id);
 };
