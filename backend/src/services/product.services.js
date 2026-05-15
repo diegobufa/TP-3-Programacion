@@ -1,14 +1,14 @@
 import { Producto } from "../../models/Producto.js";
 
 export const findProducts = async (req, res) => {
-  const products = await Product.findAll();
+  const products = await Producto.findAll();
   res.json(products);
 };
 
 export const findProduct = async (req, res) => {
   const { id } = req.params;
 
-  const product = await Product.findByPk(id);
+  const product = await Producto.findByPk(id);
 
   if (!product) {
     return res.status(404).json({ message: "Producto no encontrado" });
@@ -35,7 +35,7 @@ export const createProduct = async (req, res) => {
     });
   }
 
-  const product = await Product.create({
+  const product = await Producto.create({
     nombre,
     descripcion,
     precio,
@@ -52,7 +52,7 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
 
-  const product = await Product.findByPk(id);
+  const product = await Producto.findByPk(id);
 
   if (!product) {
     return res.status(404).json({ message: "Producto no encontrado" });
@@ -66,7 +66,7 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
-  const product = await Product.findByPk(id);
+  const product = await Producto.findByPk(id);
 
   if (!product) {
     return res.status(404).json({ message: "Producto no encontrado" });

@@ -2,6 +2,9 @@ import express from "express";
 import { PORT } from "./config.js";
 import { sequelize } from "./db.js";
 
+import authRoutes from "../routes/auth.routes.js";
+import productRoutes from "../routes/product.routes.js";
+
 import "../models/Rol.js";
 import "../models/Usuario.js";
 import "../models/Pedido.js";
@@ -10,8 +13,9 @@ import "../models/DetallePedido.js";
 import "../models/relations.js";
 
 const app = express();
-app.use(router)
 app.use(express.json());
+app.use(authRoutes);
+app.use(productRoutes);
 
 try {
   await sequelize.sync();

@@ -25,7 +25,7 @@ export const registerUser = async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   
-  const newUser = await User.create({
+  const newUser = await Usuario.create({
      nombre,
       apellido,
       usuario,
@@ -47,7 +47,7 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ where: { email } });
+  const user = await Usuario.findOne({ where: { email } });
 
   if (!user) return res.status(400).send({ message: "Usuario no existente" });
 
