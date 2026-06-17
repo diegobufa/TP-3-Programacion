@@ -188,7 +188,6 @@ const AdminProducts = () => {
     if (!productoAEliminar) return;
 
     setEliminando(true);
-
     try {
       await deleteProduct(productoAEliminar.id);
       await obtenerProductos();
