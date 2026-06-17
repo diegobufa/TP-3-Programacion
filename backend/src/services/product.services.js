@@ -28,8 +28,16 @@ export const createProduct = async (req, res) => {
     disponibilidad,
     oferta,
   } = req.body;
-
-  if (!nombre || !descripcion || !precio || !stock || !categoria || !imageUrl) {
+  if (
+    !nombre ||
+    !descripcion ||
+    precio === undefined ||
+    precio === "" ||
+    stock === undefined ||
+    stock === "" ||
+    !categoria ||
+    !imageUrl
+  ) {
     return res.status(400).json({
       message: "Faltan campos obligatorios",
     });
