@@ -35,7 +35,7 @@ export const Producto = sequelize.define(
   },
   disponibilidad: {
     type: DataTypes.BOOLEAN,
-    defaultValue: false,
+    defaultValue: true,
   },
   oferta: {
     type: DataTypes.BOOLEAN,
