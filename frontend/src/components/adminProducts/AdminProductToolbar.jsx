@@ -6,6 +6,9 @@ const AdminProductToolbar = ({
   setBusqueda,
   categoriaFiltro,
   setCategoriaFiltro,
+  marcaFiltro,
+  setMarcaFiltro,
+  marcasDisponibles,
   abrirNuevoProducto,
 }) => {
   return (
@@ -26,6 +29,19 @@ const AdminProductToolbar = ({
         {categorias.map((categoria) => (
           <option key={categoria} value={categoria}>
             {categoria}
+          </option>
+        ))}
+      </select>
+
+      <select
+        value={marcaFiltro}
+        onChange={(e) => setMarcaFiltro(e.target.value)}
+      >
+        <option value="Todas">Todas las marcas</option>
+
+        {marcasDisponibles.map((marca) => (
+          <option key={marca} value={marca}>
+            {marca}
           </option>
         ))}
       </select>
