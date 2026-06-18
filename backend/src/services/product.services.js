@@ -24,24 +24,34 @@ export const createProduct = async (req, res) => {
     precio,
     stock,
     categoria,
+    marca,
     imageUrl,
+    imagenes,
     disponibilidad,
     oferta,
   } = req.body;
+
   if (
     !nombre ||
     !descripcion ||
     precio === undefined ||
     precio === "" ||
+    Number(precio) <= 0 ||
     stock === undefined ||
     stock === "" ||
+    Number(stock) < 0 ||
     !categoria ||
+    !marca ||
     !imageUrl
   ) {
     return res.status(400).json({
-      message: "Faltan campos obligatorios",
+      message: "Faltan campos obligatorios o los datos son inválidos",
     });
   }
+
+  const imagenesValidas = Array.isArray(imagenes)
+    ? imagenes.filter((img) => img.trim() !== "")
+    : [];
 
   const product = await Producto.create({
     nombre,
@@ -49,7 +59,9 @@ export const createProduct = async (req, res) => {
     precio,
     stock,
     categoria,
+    marca,
     imageUrl,
+    imagenes: imagenesValidas,
     disponibilidad,
     oferta,
   });
@@ -66,7 +78,53 @@ export const updateProduct = async (req, res) => {
     return res.status(404).json({ message: "Producto no encontrado" });
   }
 
-  await product.update(req.body);
+  const {
+    nombre,
+    descripcion,
+    precio,
+    stock,
+    categoria,
+    marca,
+    imageUrl,
+    imagenes,
+    disponibilidad,
+    oferta,
+  } = req.body;
+
+  if (
+    !nombre ||
+    !descripcion ||
+    precio === undefined ||
+    precio === "" ||
+    Number(precio) <= 0 ||
+    stock === undefined ||
+    stock === "" ||
+    Number(stock) < 0 ||
+    !categoria ||
+    !marca ||
+    !imageUrl
+  ) {
+    return res.status(400).json({
+      message: "Datos inválidos para actualizar el producto",
+    });
+  }
+
+  const imagenesValidas = Array.isArray(imagenes)
+    ? imagenes.filter((img) => img.trim() !== "")
+    : [];
+
+  await product.update({
+    nombre,
+    descripcion,
+    precio,
+    stock,
+    categoria,
+    marca,
+    imageUrl,
+    imagenes: imagenesValidas,
+    disponibilidad,
+    oferta,
+  });
 
   res.json(product);
 };

@@ -10,6 +10,9 @@ const ProductDetail = () => {
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [cantidad, setCantidad] = useState(1);
+  const [imagenPrincipal, setImagenPrincipal] = useState("");
+  const [modalImagenAbierto, setModalImagenAbierto] = useState(false);
+
   const [textoBusqueda, setTextoBusqueda] = useState("");
   const [busqueda, setBusqueda] = useState("");
   const [categoriaSeleccionada, setCategoriaSeleccionada] =
@@ -20,7 +23,15 @@ const ProductDetail = () => {
     fetch(`http://localhost:3000/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
+        const imagenDefault =
+          data.imageUrl || "https://picsum.photos/500/400";
+
         setProducto(data);
+        setImagenPrincipal(imagenDefault);
+
+        const stockProducto = Number(data.stock) || 0;
+        setCantidad(stockProducto > 0 ? 1 : 0);
+
         setLoading(false);
       })
       .catch((err) => {
@@ -36,16 +47,41 @@ const ProductDetail = () => {
   if (!producto) {
     return <p className="text-center mt-5">Producto no encontrado</p>;
   }
+
+  const stockDisponible = Number(producto.stock) || 0;
+
+  const imagenDefault =
+    producto.imageUrl || "https://picsum.photos/500/400";
+
+  const imagenesAdicionales = Array.isArray(producto.imagenes)
+    ? producto.imagenes
+    : [];
+
+  const imagenesProducto = [
+    imagenDefault,
+    ...imagenesAdicionales,
+  ].filter((imagen, index, array) => {
+    return imagen && array.indexOf(imagen) === index;
+  });
+
   const sumarCantidad = () => {
-    if (cantidad < producto.stock) {
-      setCantidad(cantidad + 1);
-    }
+    setCantidad((cantidadActual) => {
+      if (cantidadActual < stockDisponible) {
+        return cantidadActual + 1;
+      }
+
+      return cantidadActual;
+    });
   };
 
   const restarCantidad = () => {
-    if (cantidad > 1) {
-      setCantidad(cantidad - 1);
-    }
+    setCantidad((cantidadActual) => {
+      if (cantidadActual > 1) {
+        return cantidadActual - 1;
+      }
+
+      return cantidadActual;
+    });
   };
 
   return (
@@ -83,53 +119,98 @@ const ProductDetail = () => {
 
           <strong>{producto.nombre}</strong>
         </div>
-              
+
         <div className="product-detail-container">
           <section className="detail-gallery">
             <div className="main-product-image">
               <img
-                src={producto.imageUrl || "https://picsum.photos/500/400"}
+                src={imagenPrincipal}
                 alt={producto.nombre}
+                className="clickable-main-image"
+                onClick={() => setModalImagenAbierto(true)}
               />
             </div>
 
             <div className="product-thumbs">
-              <img src={producto.imageUrl || "https://picsum.photos/500/400"} alt={producto.nombre}/>
-              <img src={producto.imageUrl || "https://picsum.photos/500/400"} alt={producto.nombre} />
-              <img src={producto.imageUrl || "https://picsum.photos/500/400"} alt={producto.nombre}/>
-              <img src={producto.imageUrl || "https://picsum.photos/500/400"} alt={producto.nombre}/>
+              {imagenesProducto.map((imagen, index) => (
+                <button
+                  type="button"
+                  key={index}
+                  className={
+                    imagenPrincipal === imagen
+                      ? "thumb-btn thumb-active"
+                      : "thumb-btn"
+                  }
+                  onClick={() => setImagenPrincipal(imagen)}
+                >
+                  <img src={imagen} alt={`${producto.nombre} ${index + 1}`} />
+                </button>
+              ))}
             </div>
           </section>
 
           <section className="detail-info">
-            <span className="product-detail-category">
-              {producto.categoria}
-            </span>
+            <div className="detail-tags">
+              <span className="product-detail-category">
+                {producto.categoria}
+              </span>
+
+              {producto.marca && producto.marca !== "Sin marca" && (
+                <span className="product-detail-brand">
+                  {producto.marca}
+                </span>
+              )}
+            </div>
 
             <h1>{producto.nombre}</h1>
 
-            <p className="product-detail-description">{producto.descripcion}</p>
-            
+            <p className="product-detail-description">
+              {producto.descripcion}
+            </p>
           </section>
 
           <aside className="detail-buy-card">
             <h2>${producto.precio}</h2>
 
-            <p className={producto.stock > 0 ? "stock-ok" : "stock-error"}>
-              ✓ {producto.stock > 0 ? "En stock" : "Sin stock"}
+            <p className={stockDisponible > 0 ? "stock-ok" : "stock-error"}>
+              ✓ {stockDisponible > 0 ? "En stock" : "Sin stock"}
             </p>
 
             <label>Cantidad</label>
 
             <div className="quantity-box">
-              <button onClick={restarCantidad}>-</button>
+              <button
+                type="button"
+                onClick={restarCantidad}
+                disabled={cantidad <= 1 || stockDisponible === 0}
+              >
+                -
+              </button>
+
               <span>{cantidad}</span>
-              <button onClick={sumarCantidad}>+</button>
+
+              <button
+                type="button"
+                onClick={sumarCantidad}
+                disabled={cantidad >= stockDisponible || stockDisponible === 0}
+              >
+                +
+              </button>
             </div>
 
-            <button className="add-cart-detail">🛒 Agregar al carrito</button>
+            <button
+              className="add-cart-detail"
+              disabled={stockDisponible === 0}
+            >
+              🛒 Agregar al carrito
+            </button>
 
-            <button className="buy-now-detail">Comprar ahora</button>
+            <button
+              className="buy-now-detail"
+              disabled={stockDisponible === 0}
+            >
+              Comprar ahora
+            </button>
 
             <div className="buy-benefits">
               <div>
@@ -155,6 +236,28 @@ const ProductDetail = () => {
           </aside>
         </div>
       </main>
+
+      {modalImagenAbierto && (
+        <div
+          className="image-modal-overlay"
+          onClick={() => setModalImagenAbierto(false)}
+        >
+          <div
+            className="image-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="image-modal-close"
+              onClick={() => setModalImagenAbierto(false)}
+            >
+              ×
+            </button>
+
+            <img src={imagenPrincipal} alt={producto.nombre} />
+          </div>
+        </div>
+      )}
 
       <Footer />
     </>

@@ -1,5 +1,5 @@
 import { FaTimes } from "react-icons/fa";
-import { categorias } from "../../constants/productConstants";
+import { categorias, marcas } from "../../constants/productConstants";
 
 const ProductAdminForm = ({
   form,
@@ -7,6 +7,7 @@ const ProductAdminForm = ({
   editandoId,
   loading,
   handleChange,
+  handleImagenChange,
   handleSubmit,
   limpiarFormulario,
   cerrarFormulario,
@@ -56,6 +57,17 @@ const ProductAdminForm = ({
           </select>
           {errores.categoria && <span>{errores.categoria}</span>}
         </div>
+        <div className="field">
+          <label>Marca</label>
+          <select name="marca" value={form.marca} onChange={handleChange}>
+            {marcas.map((marca) => (
+              <option key={marca} value={marca}>
+                {marca}
+              </option>
+            ))}
+          </select>
+          {errores.marca && <span>{errores.marca}</span>}
+        </div>
 
         <div className="field">
           <label>Precio</label>
@@ -91,6 +103,21 @@ const ProductAdminForm = ({
             placeholder="https://..."
           />
           {errores.imageUrl && <span>{errores.imageUrl}</span>}
+        </div>
+        <div className="field full">
+          <label>Imágenes adicionales</label>
+
+          <div className="extra-images-grid">
+            {form.imagenes.map((imagen, index) => (
+              <input
+                key={index}
+                type="text"
+                value={imagen}
+                onChange={(e) => handleImagenChange(index, e.target.value)}
+                placeholder={`URL imagen ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
 
         <div className="field full">

@@ -22,6 +22,7 @@ const AdminProducts = () => {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [busqueda, setBusqueda] = useState("");
   const [categoriaFiltro, setCategoriaFiltro] = useState("Todas");
+  const [marcaFiltro, setMarcaFiltro] = useState("Todas");
   const [errores, setErrores] = useState({});
   const [loading, setLoading] = useState(false);
   const formSectionRef = useRef(null);
@@ -62,6 +63,9 @@ const AdminProducts = () => {
 
     if (!form.categoria.trim()) {
       nuevosErrores.categoria = "La categoría es obligatoria";
+    }
+    if (!form.marca.trim()) {
+      nuevosErrores.marca = "La marca es obligatoria";
     }
 
     if (!form.imageUrl.trim()) {
@@ -131,6 +135,7 @@ const AdminProducts = () => {
       ...form,
       precio: Number(form.precio),
       stock: Number(form.stock),
+      imagenes: form.imagenes.filter((imagen) => imagen.trim() !== ""),
     };
 
     try {
@@ -165,7 +170,12 @@ const AdminProducts = () => {
       precio: producto.precio || "",
       stock: producto.stock || "",
       categoria: producto.categoria || "Electrodomesticos",
+      marca: producto.marca || "Samsung",
       imageUrl: producto.imageUrl || "",
+      imagenes:
+        Array.isArray(producto.imagenes) && producto.imagenes.length > 0
+          ? producto.imagenes
+          : ["", "", "", ""],
       disponibilidad: producto.disponibilidad ?? true,
       oferta: producto.oferta ?? false,
     });
@@ -201,20 +211,41 @@ const AdminProducts = () => {
       setEliminando(false);
     }
   };
-
+  const marcasDisponibles = [
+    ...new Set(
+      productos
+        .map((producto) => producto.marca)
+        .filter((marca) => marca && marca !== "Sin marca"),
+    ),
+  ].sort();
   const productosFiltrados = productos.filter((producto) => {
     const texto = busqueda.toLowerCase();
 
     const coincideBusqueda =
       producto.nombre?.toLowerCase().includes(texto) ||
       producto.categoria?.toLowerCase().includes(texto) ||
-      producto.descripcion?.toLowerCase().includes(texto);
+      producto.descripcion?.toLowerCase().includes(texto) ||
+      producto.marca?.toLowerCase().includes(texto);
 
     const coincideCategoria =
       categoriaFiltro === "Todas" || producto.categoria === categoriaFiltro;
 
-    return coincideBusqueda && coincideCategoria;
+    const coincideMarca =
+      marcaFiltro === "Todas" || producto.marca === marcaFiltro;
+
+    return coincideBusqueda && coincideCategoria && coincideMarca;
   });
+
+  const handleImagenChange = (index, value) => {
+    const nuevasImagenes = [...form.imagenes];
+
+    nuevasImagenes[index] = value;
+
+    setForm((prev) => ({
+      ...prev,
+      imagenes: nuevasImagenes,
+    }));
+  };
 
   return (
     <div className="admin-layout">
@@ -229,6 +260,9 @@ const AdminProducts = () => {
             setBusqueda={setBusqueda}
             categoriaFiltro={categoriaFiltro}
             setCategoriaFiltro={setCategoriaFiltro}
+            marcaFiltro={marcaFiltro}
+            setMarcaFiltro={setMarcaFiltro}
+            marcasDisponibles={marcasDisponibles}
             abrirNuevoProducto={abrirNuevoProducto}
           />
 
@@ -240,6 +274,7 @@ const AdminProducts = () => {
                 editandoId={editandoId}
                 loading={loading}
                 handleChange={handleChange}
+                handleImagenChange={handleImagenChange}
                 handleSubmit={handleSubmit}
                 limpiarFormulario={limpiarFormulario}
                 cerrarFormulario={cerrarFormulario}
