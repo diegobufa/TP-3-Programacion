@@ -9,6 +9,9 @@ const AdminProductToolbar = ({
   marcaFiltro,
   setMarcaFiltro,
   marcasDisponibles,
+  ordenAdmin,
+  setOrdenAdmin,
+  limpiarFiltrosAdmin,
   abrirNuevoProducto,
 }) => {
   return (
@@ -46,7 +49,32 @@ const AdminProductToolbar = ({
         ))}
       </select>
 
-      <button className="new-product-btn" onClick={abrirNuevoProducto}>
+      <select
+        value={ordenAdmin}
+        onChange={(e) => setOrdenAdmin(e.target.value)}
+      >
+        <option value="relevancia">Ordenar por</option>
+        <option value="precioMenor">Precio: menor a mayor</option>
+        <option value="precioMayor">Precio: mayor a menor</option>
+        <option value="stockMayor">Stock: mayor a menor</option>
+        <option value="stockMenor">Stock: menor a mayor</option>
+        <option value="disponiblesPrimero">Disponibles primero</option>
+        <option value="noDisponiblesPrimero">No disponibles primero</option>
+      </select>
+
+      <button
+        type="button"
+        className="clear-admin-filters-btn"
+        onClick={limpiarFiltrosAdmin}
+      >
+        Limpiar
+      </button>
+
+      <button
+        type="button"
+        className="new-product-btn"
+        onClick={abrirNuevoProducto}
+      >
         <FaPlus /> Nuevo producto
       </button>
     </div>

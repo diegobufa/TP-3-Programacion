@@ -23,6 +23,7 @@ const AdminProducts = () => {
   const [busqueda, setBusqueda] = useState("");
   const [categoriaFiltro, setCategoriaFiltro] = useState("Todas");
   const [marcaFiltro, setMarcaFiltro] = useState("Todas");
+  const [ordenAdmin, setOrdenAdmin] = useState("relevancia");
   const [errores, setErrores] = useState({});
   const [loading, setLoading] = useState(false);
   const formSectionRef = useRef(null);
@@ -107,6 +108,12 @@ const AdminProducts = () => {
     setForm(initialForm);
     setEditandoId(null);
     setErrores({});
+  };
+  const limpiarFiltrosAdmin = () => {
+    setBusqueda("");
+    setCategoriaFiltro("Todas");
+    setMarcaFiltro("Todas");
+    setOrdenAdmin("relevancia");
   };
 
   const abrirNuevoProducto = () => {
@@ -218,23 +225,51 @@ const AdminProducts = () => {
         .filter((marca) => marca && marca !== "Sin marca"),
     ),
   ].sort();
-  const productosFiltrados = productos.filter((producto) => {
-    const texto = busqueda.toLowerCase();
+  const productosFiltrados = productos
+    .filter((producto) => {
+      const texto = busqueda.toLowerCase();
 
-    const coincideBusqueda =
-      producto.nombre?.toLowerCase().includes(texto) ||
-      producto.categoria?.toLowerCase().includes(texto) ||
-      producto.descripcion?.toLowerCase().includes(texto) ||
-      producto.marca?.toLowerCase().includes(texto);
+      const coincideBusqueda =
+        producto.nombre?.toLowerCase().includes(texto) ||
+        producto.categoria?.toLowerCase().includes(texto) ||
+        producto.descripcion?.toLowerCase().includes(texto) ||
+        producto.marca?.toLowerCase().includes(texto);
 
-    const coincideCategoria =
-      categoriaFiltro === "Todas" || producto.categoria === categoriaFiltro;
+      const coincideCategoria =
+        categoriaFiltro === "Todas" || producto.categoria === categoriaFiltro;
 
-    const coincideMarca =
-      marcaFiltro === "Todas" || producto.marca === marcaFiltro;
+      const coincideMarca =
+        marcaFiltro === "Todas" || producto.marca === marcaFiltro;
 
-    return coincideBusqueda && coincideCategoria && coincideMarca;
-  });
+      return coincideBusqueda && coincideCategoria && coincideMarca;
+    })
+    .sort((a, b) => {
+      if (ordenAdmin === "precioMenor") {
+        return Number(a.precio) - Number(b.precio);
+      }
+
+      if (ordenAdmin === "precioMayor") {
+        return Number(b.precio) - Number(a.precio);
+      }
+
+      if (ordenAdmin === "stockMayor") {
+        return Number(b.stock) - Number(a.stock);
+      }
+
+      if (ordenAdmin === "stockMenor") {
+        return Number(a.stock) - Number(b.stock);
+      }
+
+      if (ordenAdmin === "disponiblesPrimero") {
+        return Number(b.disponibilidad) - Number(a.disponibilidad);
+      }
+
+      if (ordenAdmin === "noDisponiblesPrimero") {
+        return Number(a.disponibilidad) - Number(b.disponibilidad);
+      }
+
+      return 0;
+    });
 
   const handleImagenChange = (index, value) => {
     const nuevasImagenes = [...form.imagenes];
@@ -263,6 +298,9 @@ const AdminProducts = () => {
             marcaFiltro={marcaFiltro}
             setMarcaFiltro={setMarcaFiltro}
             marcasDisponibles={marcasDisponibles}
+            ordenAdmin={ordenAdmin}
+            setOrdenAdmin={setOrdenAdmin}
+            limpiarFiltrosAdmin={limpiarFiltrosAdmin}
             abrirNuevoProducto={abrirNuevoProducto}
           />
 

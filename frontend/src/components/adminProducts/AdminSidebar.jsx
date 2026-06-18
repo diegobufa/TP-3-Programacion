@@ -9,7 +9,7 @@ import {
 const AdminSidebar = () => {
   return (
     <aside className="admin-sidebar">
-      <div className="admin-logo"></div>
+      <div className="admin-logo"><h2>ElectroFest</h2></div>
 
       <div className="admin-user">
         <div className="admin-avatar">A</div>
