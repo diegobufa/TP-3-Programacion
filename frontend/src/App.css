@@ -1288,6 +1288,26 @@ body {
   font-weight: 700;
 }
 
+.admin-menu-link {
+  border: none;
+  background: transparent;
+  color: #d5dde5;
+  padding: 14px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  width: 100%;
+}
+
+.admin-menu-link:hover,
+.admin-menu-link.active {
+  background: #00a8d8;
+  color: white;
+}
+
 .admin-table-card {
   overflow-x: auto;
 }
@@ -1513,6 +1533,20 @@ body {
 
   .admin-sidebar {
     display: none;
+  }
+
+  .admin-sidebar-drawer {
+    display: block;
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100vh;
+    transition: left 0.25s ease;
+    z-index: 1000;
+  }
+
+  .admin-sidebar-drawer.admin-sidebar-open {
+    left: 0;
   }
 
   .admin-actions-bar,

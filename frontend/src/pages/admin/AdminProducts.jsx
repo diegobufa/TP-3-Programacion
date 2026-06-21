@@ -1,19 +1,19 @@
 import { useEffect, useState, useRef } from "react";
-import AdminSidebar from "../components/adminProducts/AdminSidebar";
-import AdminTopbar from "../components/adminProducts/AdminTopbar";
-import AdminProductToolbar from "../components/adminProducts/AdminProductToolbar";
-import ProductAdminForm from "../components/adminProducts/ProductAdminForm";
-import ProductPreview from "../components/adminProducts/ProductPreview";
-import ProductTable from "../components/adminProducts/ProductTable";
-import { initialForm } from "../constants/productConstants";
+import AdminSidebar from "../../components/admin/AdminSidebar";
+import AdminTopbar from "../../components/admin/AdminTopbar";
+import AdminProductToolbar from "../../components/adminProducts/AdminProductToolbar";
+import ProductAdminForm from "../../components/adminProducts/ProductAdminForm";
+import ProductPreview from "../../components/adminProducts/ProductPreview";
+import ProductTable from "../../components/adminProducts/ProductTable";
+import { initialForm } from "../../constants/productConstants";
 import {
   getProducts,
   createProduct,
   updateProduct,
   deleteProduct,
-} from "../services/productApi";
+} from "../../services/productApi";
 import { toast } from "react-toastify";
-import ConfirmDeleteModal from "../ui/ConfirmDeleteModal/ConfirmDeleteModal";
+import ConfirmDeleteModal from "../../ui/ConfirmDeleteModal/ConfirmDeleteModal";
 
 const AdminProducts = () => {
   const [productos, setProductos] = useState([]);
@@ -29,6 +29,7 @@ const AdminProducts = () => {
   const formSectionRef = useRef(null);
   const [productoAEliminar, setProductoAEliminar] = useState(null);
   const [eliminando, setEliminando] = useState(false);
+  const [sidebarAbierto, setSidebarAbierto] = useState(false);
 
   const obtenerProductos = async () => {
     try {
@@ -284,10 +285,10 @@ const AdminProducts = () => {
 
   return (
     <div className="admin-layout">
-      <AdminSidebar />
+      <AdminSidebar abierto={sidebarAbierto} onCerrar={() => setSidebarAbierto(false)} />
 
       <main className="admin-main">
-        <AdminTopbar />
+        <AdminTopbar titulo="Productos" onToggleSidebar={() => setSidebarAbierto(!sidebarAbierto)} sidebarAbierto={sidebarAbierto} />
 
         <section className="admin-content">
           <AdminProductToolbar
