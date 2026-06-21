@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
 const badgeColor = (estado) => ({
-  confirmado: "status-active", enviado: "status-active", entregado: "status-active",
-  pendiente: "status-inactive", cancelado: "status-inactive",
-}[estado] ?? "status-inactive");
+  confirmado: "status-confirmado", 
+  enviado: "status-enviado", 
+  entregado: "status-entregado",
+  pendiente: "status-pendiente", 
+  cancelado: "status-cancelado",
+}[estado] ?? "status-pendiente");
 
 const UltimosPedidos = ({ pedidos }) => {
   const navigate = useNavigate();
@@ -24,15 +27,15 @@ const UltimosPedidos = ({ pedidos }) => {
           </tr>
         </thead>
         <tbody>
-          {pedidos.slice(0, 5).length === 0
+          {pedidos.slice(-5).length === 0
             ? <tr><td colSpan={4} className="empty-products">Sin pedidos</td></tr>
-            : pedidos.slice(0, 5).map(p => (
+            : pedidos.slice(-5).map(p => (
               <tr key={p.id}>
                 <td><strong>{p.numero_pedido}</strong></td>
                 <td><span className={badgeColor(p.estado)}>{p.estado}</span></td>
-                <td>{p.detalles.reduce((acc, d) => acc + d.cantidad, 0)}</td>
+                <td><strong style={{ color: "#16a34a" }}>{p.detalles.reduce((acc, d) => acc + d.cantidad, 0)}</strong></td>
                 <td>{p.direccion_envio}</td>
-                <td>${p.detalles.reduce((acc, d) => acc + d.precio_subtotal, 0).toLocaleString("es-AR")}</td>
+                <td><strong style={{ color: "#16a34a" }}>${p.detalles.reduce((acc, d) => acc + d.precio_subtotal, 0).toLocaleString("es-AR")}</strong></td>
               </tr>
             ))}
         </tbody>

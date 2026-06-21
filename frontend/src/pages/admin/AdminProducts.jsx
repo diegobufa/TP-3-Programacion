@@ -30,6 +30,7 @@ const AdminProducts = () => {
   const [productoAEliminar, setProductoAEliminar] = useState(null);
   const [eliminando, setEliminando] = useState(false);
   const [sidebarAbierto, setSidebarAbierto] = useState(false);
+  const [soloOfertas, setSoloOfertas] = useState(false);
 
   const obtenerProductos = async () => {
     try {
@@ -115,6 +116,7 @@ const AdminProducts = () => {
     setCategoriaFiltro("Todas");
     setMarcaFiltro("Todas");
     setOrdenAdmin("relevancia");
+    setSoloOfertas(false);
   };
 
   const abrirNuevoProducto = () => {
@@ -230,6 +232,8 @@ const AdminProducts = () => {
     .filter((producto) => {
       const texto = busqueda.toLowerCase();
 
+      const coincideOferta = !soloOfertas || producto.oferta === true;
+
       const coincideBusqueda =
         producto.nombre?.toLowerCase().includes(texto) ||
         producto.categoria?.toLowerCase().includes(texto) ||
@@ -242,9 +246,15 @@ const AdminProducts = () => {
       const coincideMarca =
         marcaFiltro === "Todas" || producto.marca === marcaFiltro;
 
-      return coincideBusqueda && coincideCategoria && coincideMarca;
+      return coincideBusqueda && coincideCategoria && coincideMarca && coincideOferta;
     })
     .sort((a, b) => {
+      if (ordenAdmin === "oferta") {
+        if (a.oferta && !b.oferta) return -1;
+        if (!a.oferta && b.oferta) return 1;
+        if (a.oferta && b.oferta) return Number(a.precio) - Number(b.precio);
+      }
+
       if (ordenAdmin === "precioMenor") {
         return Number(a.precio) - Number(b.precio);
       }
@@ -303,6 +313,8 @@ const AdminProducts = () => {
             setOrdenAdmin={setOrdenAdmin}
             limpiarFiltrosAdmin={limpiarFiltrosAdmin}
             abrirNuevoProducto={abrirNuevoProducto}
+            soloOfertas={soloOfertas}
+            setSoloOfertas={setSoloOfertas}
           />
 
           {mostrarFormulario && (

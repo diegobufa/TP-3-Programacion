@@ -1,10 +1,10 @@
 const badgeColor = (estado) => ({
-    confirmado: "status-active",
-    enviado: "status-active",
-    entregado: "status-active",
-    pendiente: "status-inactive",
-    cancelado: "status-inactive",
-}[estado] ?? "status-inactive");
+    confirmado: "status-confirmado",
+    enviado: "status-enviado",
+    entregado: "status-entregado",
+    pendiente: "status-pendiente",
+    cancelado: "status-cancelado",
+}[estado] ?? "status-pendiente");
 
 const PedidoDetalleInfo = ({ pedido }) => {
     const total = pedido.detalles.reduce((acc, d) => acc + d.precio_subtotal, 0);

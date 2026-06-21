@@ -4,12 +4,12 @@ import { FaEye } from "react-icons/fa";
 const ESTADOS = ["pendiente", "confirmado", "enviado", "entregado", "cancelado"];
 
 const badgeColor = (estado) => ({
-    pendiente: "status-inactive",
-    confirmado: "status-active",
-    enviado: "status-active",
-    entregado: "status-active",
-    cancelado: "status-inactive",
-}[estado] ?? "status-inactive");
+    pendiente: "status-pendiente",
+    confirmado: "status-confirmado",
+    enviado: "status-enviado",
+    entregado: "status-entregado",
+    cancelado: "status-cancelado",
+}[estado] ?? "status-pendiente");
 
 const PedidosTable = ({ pedidosFiltrados, pedidos, cambiarEstado }) => {
     const navigate = useNavigate();
@@ -36,28 +36,37 @@ const PedidosTable = ({ pedidosFiltrados, pedidos, cambiarEstado }) => {
                         : pedidosFiltrados.map(p => (
                             <tr key={p.id}>
                                 <td><strong>{p.numero_pedido}</strong></td>
-                                <td>{p.fk_usuario}</td>
+                                <td><strong style={{ color: "#16a34a" }}>{p.fk_usuario}</strong></td>
                                 <td>{new Date(p.fecha_pedido).toLocaleDateString("es-AR")}</td>
                                 <td><span className={badgeColor(p.estado)}>{p.estado}</span></td>
-                                <td>{p.detalles.reduce((acc, d) => acc + d.cantidad, 0)}</td>
+                                <td><strong style={{ color: "#00a8d8" }}>{p.detalles.reduce((acc, d) => acc + d.cantidad, 0)}</strong></td>
                                 <td>{p.direccion_envio}</td>
                                 <td>{p.localidad_envio}</td>
-                                <td>${p.detalles.reduce((acc, d) => acc + d.precio_subtotal, 0).toLocaleString("es-AR")}</td>
-                                <td>
-                                <div className="table-actions">
-                                    <select
-                                        value={p.estado}
-                                        onChange={(e) => cambiarEstado(p.id, e.target.value)}
-                                        style={{ height: 36, border: "1px solid #e2e8f0", borderRadius: 8, padding: "0 8px", fontSize: 13, cursor: "pointer" }}
-                                    >
-                                        {ESTADOS.map(e => <option key={e} value={e}>{e.charAt(0).toUpperCase() + e.slice(1)}</option>)}
-                                    </select>
-                                    <button onClick={() => navigate(`/admin/pedidos/${p.id}`)} style={{ color: "#00a8d8" }}>
-                                        <FaEye />
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                                <td><strong style={{ color: "#16a34a" }}>${p.detalles.reduce((acc, d) => acc + d.precio_subtotal, 0).toLocaleString("es-AR")}</strong></td>
+                                <td style={{ verticalAlign: "middle" }}>
+                                    <div className="table-actions">
+                                        <select
+                                            value={p.estado}
+                                            onChange={(e) => cambiarEstado(p.id, e.target.value)}
+                                            style={{ 
+                                                height: 36, 
+                                                borderRadius: 8, 
+                                                padding: "0 8px", 
+                                                fontSize: 13, 
+                                                cursor: "pointer" ,
+                                                border: "1px solid #d3d7db",
+                                                background: "white",
+                                                color: "#111827"
+                                            }}
+                                        >
+                                            {ESTADOS.map(e => <option key={e} value={e}>{e.charAt(0).toUpperCase() + e.slice(1)}</option>)}
+                                        </select>
+                                        <button onClick={() => navigate(`/admin/pedidos/${p.id}`)} style={{ color: "#00a8d8" }}>
+                                            <FaEye />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
                     ))}
                 </tbody>
             </table>

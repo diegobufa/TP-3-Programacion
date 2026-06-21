@@ -36,7 +36,7 @@ const ProductTable = ({
 
                   <div>
                     <strong>{producto.nombre}</strong>
-                    {producto.oferta && <small>Oferta activa</small>}
+                    {producto.oferta && <small style={{ display: "block", textAlign: "left" }}>Oferta activa</small>}
                   </div>
                 </div>
               </td>
