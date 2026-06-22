@@ -1592,6 +1592,13 @@ body {
   }
 }
 
+@media (min-width: 1101px) {
+  
+  .admin-hamburguer {
+    display: none;
+  }
+}
+
 @media (max-width: 992px) {
   .header {
     display: flex;

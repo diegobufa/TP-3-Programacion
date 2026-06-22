@@ -4,7 +4,7 @@ const AdminTopbar = ({ titulo = "Admin", onToggleSidebar, sidebarAbierto }) => {
   return (
     <header className="admin-topbar">
       <div className="admin-title">
-        <FaBars style={{ cursor: "pointer" }} onClick={onToggleSidebar} />
+        <FaBars className="admin-hamburguer" style={{ cursor: "pointer" }} onClick={onToggleSidebar} />
         {!sidebarAbierto && <h2>{titulo}</h2>}
       </div>
 
