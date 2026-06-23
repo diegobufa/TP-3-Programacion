@@ -1,19 +1,19 @@
 import { useEffect, useState, useRef } from "react";
-import AdminSidebar from "../components/adminProducts/AdminSidebar";
-import AdminTopbar from "../components/adminProducts/AdminTopbar";
-import AdminProductToolbar from "../components/adminProducts/AdminProductToolbar";
-import ProductAdminForm from "../components/adminProducts/ProductAdminForm";
-import ProductPreview from "../components/adminProducts/ProductPreview";
-import ProductTable from "../components/adminProducts/ProductTable";
-import { initialForm } from "../constants/productConstants";
+import AdminSidebar from "../../components/admin/AdminSidebar";
+import AdminTopbar from "../../components/admin/AdminTopbar";
+import AdminProductToolbar from "../../components/adminProducts/AdminProductToolbar";
+import ProductAdminForm from "../../components/adminProducts/ProductAdminForm";
+import ProductPreview from "../../components/adminProducts/ProductPreview";
+import ProductTable from "../../components/adminProducts/ProductTable";
+import { initialForm } from "../../constants/productConstants";
 import {
   getProducts,
   createProduct,
   updateProduct,
   deleteProduct,
-} from "../services/productApi";
+} from "../../services/productApi";
 import { toast } from "react-toastify";
-import ConfirmDeleteModal from "../ui/ConfirmDeleteModal/ConfirmDeleteModal";
+import ConfirmDeleteModal from "../../ui/ConfirmDeleteModal/ConfirmDeleteModal";
 
 const AdminProducts = () => {
   const [productos, setProductos] = useState([]);
@@ -29,6 +29,8 @@ const AdminProducts = () => {
   const formSectionRef = useRef(null);
   const [productoAEliminar, setProductoAEliminar] = useState(null);
   const [eliminando, setEliminando] = useState(false);
+  const [sidebarAbierto, setSidebarAbierto] = useState(false);
+  const [soloOfertas, setSoloOfertas] = useState(false);
 
   const obtenerProductos = async () => {
     try {
@@ -114,6 +116,7 @@ const AdminProducts = () => {
     setCategoriaFiltro("Todas");
     setMarcaFiltro("Todas");
     setOrdenAdmin("relevancia");
+    setSoloOfertas(false);
   };
 
   const abrirNuevoProducto = () => {
@@ -229,6 +232,8 @@ const AdminProducts = () => {
     .filter((producto) => {
       const texto = busqueda.toLowerCase();
 
+      const coincideOferta = !soloOfertas || producto.oferta === true;
+
       const coincideBusqueda =
         producto.nombre?.toLowerCase().includes(texto) ||
         producto.categoria?.toLowerCase().includes(texto) ||
@@ -241,9 +246,15 @@ const AdminProducts = () => {
       const coincideMarca =
         marcaFiltro === "Todas" || producto.marca === marcaFiltro;
 
-      return coincideBusqueda && coincideCategoria && coincideMarca;
+      return coincideBusqueda && coincideCategoria && coincideMarca && coincideOferta;
     })
     .sort((a, b) => {
+      if (ordenAdmin === "oferta") {
+        if (a.oferta && !b.oferta) return -1;
+        if (!a.oferta && b.oferta) return 1;
+        if (a.oferta && b.oferta) return Number(a.precio) - Number(b.precio);
+      }
+
       if (ordenAdmin === "precioMenor") {
         return Number(a.precio) - Number(b.precio);
       }
@@ -284,10 +295,10 @@ const AdminProducts = () => {
 
   return (
     <div className="admin-layout">
-      <AdminSidebar />
+      <AdminSidebar abierto={sidebarAbierto} onCerrar={() => setSidebarAbierto(false)} />
 
       <main className="admin-main">
-        <AdminTopbar />
+        <AdminTopbar titulo="Productos" onToggleSidebar={() => setSidebarAbierto(!sidebarAbierto)} sidebarAbierto={sidebarAbierto} />
 
         <section className="admin-content">
           <AdminProductToolbar
@@ -302,6 +313,8 @@ const AdminProducts = () => {
             setOrdenAdmin={setOrdenAdmin}
             limpiarFiltrosAdmin={limpiarFiltrosAdmin}
             abrirNuevoProducto={abrirNuevoProducto}
+            soloOfertas={soloOfertas}
+            setSoloOfertas={setSoloOfertas}
           />
 
           {mostrarFormulario && (

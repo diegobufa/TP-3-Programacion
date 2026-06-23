@@ -36,6 +36,7 @@ const ProductTable = ({
 
                   <div>
                     <strong>{producto.nombre}</strong>
+<<<<<<< HEAD
 
                     {producto.marca && producto.marca !== "Sin marca" && (
                       <span className="table-product-brand">
@@ -44,6 +45,9 @@ const ProductTable = ({
                     )}
 
                     {producto.oferta && <small>Oferta activa</small>}
+=======
+                    {producto.oferta && <small style={{ display: "block", textAlign: "left" }}>Oferta activa</small>}
+>>>>>>> origin/Gero
                   </div>
                 </div>
               </td>

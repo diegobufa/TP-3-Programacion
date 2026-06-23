@@ -1542,10 +1542,32 @@ img {
   font-weight: 700;
 }
 
+<<<<<<< HEAD
 
 /* =========================================================
    22. ADMIN - TABLA DE PRODUCTOS
    ========================================================= */
+=======
+.admin-menu-link {
+  border: none;
+  background: transparent;
+  color: #d5dde5;
+  padding: 14px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  width: 100%;
+}
+
+.admin-menu-link:hover,
+.admin-menu-link.active {
+  background: #00a8d8;
+  color: white;
+}
+>>>>>>> origin/Gero
 
 .admin-table-card {
   background: white;
@@ -1624,25 +1646,52 @@ img {
 }
 
 .status-active,
+<<<<<<< HEAD
 .status-inactive {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 110px;
   padding: 8px 14px;
+=======
+.status-inactive,
+.status-entregado,
+.status-cancelado,
+.status-pendiente,
+.status-confirmado,
+.status-enviado {
+  padding: 5px 10px;
+>>>>>>> origin/Gero
   border-radius: 999px;
   font-size: 14px;
   font-weight: 900;
 }
 
-.status-active {
+.status-active,
+.status-entregado {
   background: #dcfce7;
   color: #15803d;
 }
 
-.status-inactive {
+.status-inactive,
+.status-cancelado {
   background: #fee2e2;
   color: #b91c1c;
+}
+
+.status-pendiente {
+  background: #fffcd8;
+  color: #e6d85e;
+}
+
+.status-confirmado {
+  background: #e2e4fe;
+  color: #1e40af;
+}
+
+.status-enviado {
+  background: #e2ecfe;
+  color: #0369a1;
 }
 
 .table-actions {
@@ -1762,6 +1811,13 @@ img {
   cursor: not-allowed;
 }
 
+.metricas-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
 @keyframes modalFade {
   from {
     opacity: 0;
@@ -1786,6 +1842,19 @@ img {
 
   .new-product-btn {
     grid-column: span 2;
+  }
+}
+
+@media (max-width: 1560px) {
+  .admin-actions-bar,
+  .admin-form-preview {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1400px) {
+  .metricas-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -1821,8 +1890,30 @@ img {
     display: none;
   }
 
+<<<<<<< HEAD
   .admin-form-preview {
     grid-template-columns: 1fr;
+=======
+  .admin-sidebar-drawer {
+    display: block;
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100vh;
+    transition: left 0.25s ease;
+    z-index: 1000;
+  }
+
+  .admin-sidebar-drawer.admin-sidebar-open {
+    left: 0;
+  }
+}
+
+@media (min-width: 1101px) {
+  
+  .admin-hamburguer {
+    display: none;
+>>>>>>> origin/Gero
   }
 }
 
@@ -1966,6 +2057,10 @@ img {
     flex: 0 0 48px;
     width: 48px;
   }
+
+  .metricas-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 650px) {
@@ -2092,6 +2187,10 @@ img {
 
   .detail-buy-card h2 {
     font-size: 30px;
+  }
+
+  .metricas-grid {
+    grid-template-columns: 1.fr;
   }
 }
 
