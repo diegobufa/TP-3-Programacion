@@ -1635,14 +1635,31 @@ img {
   font-weight: 900;
 }
 
-.status-active {
+.status-active,
+.status-entregado {
   background: #dcfce7;
   color: #15803d;
 }
 
-.status-inactive {
+.status-inactive,
+.status-cancelado {
   background: #fee2e2;
   color: #b91c1c;
+}
+
+.status-pendiente {
+  background: #fffcd8;
+  color: #e6d85e;
+}
+
+.status-confirmado {
+  background: #e2e4fe;
+  color: #1e40af;
+}
+
+.status-enviado {
+  background: #e2ecfe;
+  color: #0369a1;
 }
 
 .table-actions {
@@ -1762,6 +1779,13 @@ img {
   cursor: not-allowed;
 }
 
+.metricas-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
 @keyframes modalFade {
   from {
     opacity: 0;
@@ -1786,6 +1810,33 @@ img {
 
   .new-product-btn {
     grid-column: span 2;
+  }
+}
+
+/* =========================================================
+   24. RESPONSIVE - GENERAL
+   ========================================================= */
+
+@media (max-width: 1300px) {
+  .admin-actions-bar {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .new-product-btn {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 1560px) {
+  .admin-actions-bar,
+  .admin-form-preview {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1400px) {
+  .metricas-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -1965,6 +2016,10 @@ img {
   .quantity-box button {
     flex: 0 0 48px;
     width: 48px;
+  }
+
+  .metricas-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

@@ -13,6 +13,7 @@ const AdminProductToolbar = ({
   setOrdenAdmin,
   limpiarFiltrosAdmin,
   abrirNuevoProducto,
+  
 }) => {
   return (
     <div className="admin-actions-bar">
@@ -54,6 +55,7 @@ const AdminProductToolbar = ({
         onChange={(e) => setOrdenAdmin(e.target.value)}
       >
         <option value="relevancia">Ordenar por</option>
+        <option value="oferta">Ofertas</option>
         <option value="precioMenor">Precio: menor a mayor</option>
         <option value="precioMayor">Precio: mayor a menor</option>
         <option value="stockMayor">Stock: mayor a menor</option>
