@@ -30,7 +30,7 @@ export const authservices = {
 
     const token = await res.text();
     
-    return { token, email }; 
+    return token ;
   },
 
   getUsuarios: async (token) => {
