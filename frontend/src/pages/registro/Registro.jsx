@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { authService } from '../../services/authServices';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function Registro() {
   const navigate = useNavigate();
@@ -36,8 +36,16 @@ export default function Registro() {
 
   return (
     <div style={{ maxWidth: '500px', margin: '30px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
+
+      <div style={{ marginBottom: '15px' }}>
+        <Link to="/" style={{ color: '#007bff', textDecoration: 'none', fontSize: '14px' }}>
+          ← Volver al Inicio
+        </Link>
+      </div>
+
       <h2>Registro de Usuario</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
+
       <form onSubmit={handleSubmit}>
         <h3>Datos Personales</h3>
         <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} required style={{ width: '45%', marginRight: '5%', marginBottom: '10px', padding: '8px' }} />
@@ -58,6 +66,14 @@ export default function Registro() {
 
         <button type="submit" style={{ width: '100%', padding: '10px', background: '#28a745', color: 'white', border: 'none', cursor: 'pointer', marginTop: '15px' }}>Registrarse</button>
       </form>
+
+      <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '14px' }}>
+        <span>¿Ya tienes una cuenta? </span>
+        <Link to="/login" style={{ color: '#007bff', fontWeight: 'bold', textDecoration: 'none' }}>
+          Inicia Sesión aquí
+        </Link>
+      </div>
+      
     </div>
   );
 }
