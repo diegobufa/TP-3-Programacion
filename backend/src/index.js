@@ -6,7 +6,7 @@ import { sequelize } from "./db.js";
 import authRoutes from "../routes/auth.routes.js";
 import productRoutes from "../routes/product.routes.js";
 
-import "../models/Rol.js";
+import { Rol } from "../models/Rol.js";
 import "../models/Usuario.js";
 import "../models/Pedido.js";
 import "../models/Producto.js";
@@ -21,6 +21,22 @@ app.use(productRoutes);
 
 try {
   await sequelize.sync();
+
+  await Rol.findOrCreate({
+            where: { id: 1 },
+            defaults: { nombre: "Cliente" }
+        });
+
+        await Rol.findOrCreate({
+            where: { id: 2 },
+            defaults: { nombre: "Administrador" }
+        });
+
+        await Rol.findOrCreate({
+            where: { id: 3 },
+            defaults: { nombre: "SuperAdmin" }
+        });
+
 
   app.listen(PORT, () => {
     console.log(`Servidor escuchando en puerto ${PORT}`);
