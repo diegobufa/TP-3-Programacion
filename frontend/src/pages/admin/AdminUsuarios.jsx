@@ -46,8 +46,7 @@ const AdminUsuarios = () => {
             />
             <UsuariosTable 
                 filtrados={filtrados} 
-                usuarios={usuarios} 
-                roles={ROLES} 
+                usuarios={usuarios}  
                 cambiarRol={cambiarRol} 
             />
         </>

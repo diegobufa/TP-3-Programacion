@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { PEDIDOS_MOCK } from "./AdminPedidos";
 import PedidoDetalleInfo from "../../components/adminPedidos/PedidoDetalleInfo";
 import PedidoDetalleProductos from "../../components/adminPedidos/PedidoDetalleProductos";
+import PedidoCambiarEstado from "../../components/adminPedidos/PedidCambiarEstado"
 
 const AdminPedidoDetalle = () => {
     const { id } = useParams();
@@ -22,7 +23,7 @@ const AdminPedidoDetalle = () => {
     if (!pedido) return <p className="empty-products">Pedido no encontrado.</p>;
 
     const cambiarEstado = (nuevoEstado) => {
-        setPedidos(prev => prev.map(p.id === pedido.id ? { ...p, estado: nuevoEstado } : p));
+        setPedidos(prev => prev.map(p => p.id === pedido.id ? { ...p, estado: nuevoEstado } : p));
     };
 
     return (
@@ -37,6 +38,10 @@ const AdminPedidoDetalle = () => {
             <PedidoDetalleProductos 
                 detalles={pedido.detalles} 
                 productos={productos} 
+            />
+            <PedidoCambiarEstado 
+                estadoActual={pedido.estado}
+                onChange={cambiarEstado}
             />
         </>
     );

@@ -13,8 +13,7 @@ const AdminProductToolbar = ({
   setOrdenAdmin,
   limpiarFiltrosAdmin,
   abrirNuevoProducto,
-  soloOfertas,
-  setSoloOfertas,
+  
 }) => {
   return (
     <div className="admin-actions-bar">

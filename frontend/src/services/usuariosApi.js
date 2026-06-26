@@ -13,6 +13,6 @@ export const updateUsuarioRol = async (id, fk_rol) => {
         body: JSON.stringify({ fk_rol }),
     });
 
-    if (!res-ok) throw new Error("Error al actualizar rol");
+    if (!res.ok) throw new Error("Error al actualizar rol");
     return await res.json();
 };

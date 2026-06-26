@@ -24,53 +24,82 @@ const ProductTable = ({
         <tbody>
           {productosFiltrados.map((producto) => (
             <tr key={producto.id}>
-              <td>
+              <td data-label="Producto">
                 <div className="table-product-info">
                   <img
                     src={
                       producto.imageUrl ||
-                      "https://placehold.co/60x60?text=Producto"
+                      "https://placehold.co/100x100?text=Producto"
                     }
                     alt={producto.nombre}
                   />
 
                   <div>
                     <strong>{producto.nombre}</strong>
-                    {producto.oferta && <small style={{ display: "block", textAlign: "left" }}>Oferta activa</small>}
+
+                    {producto.marca && producto.marca !== "Sin marca" && (
+                      <span className="table-product-brand">
+                        {producto.marca}
+                      </span>
+                    )}
+
+                    {producto.oferta && <small>Oferta activa</small>}
                   </div>
                 </div>
               </td>
 
-              <td>{producto.categoria}</td>
-
-              <td>{formatoPrecio(producto.precio)}</td>
-
-              <td>
-                <strong className="stock-number">{producto.stock}</strong>
-              </td>
-
-              <td>
-                <span
-                  className={
-                    producto.disponibilidad
-                      ? "status-active"
-                      : "status-inactive"
-                  }
-                >
-                  {producto.disponibilidad ? "Disponible" : "Oculto"}
+              <td data-label="Categoría">
+                <span className="table-mobile-value">
+                  {producto.categoria}
                 </span>
               </td>
 
-              <td>
-                <div className="table-actions">
-                  <button onClick={() => editarProducto(producto)}>
-                    <FaEdit />
-                  </button>
+              <td data-label="Precio">
+                <span className="table-mobile-value">
+                  {formatoPrecio(producto.precio)}
+                </span>
+              </td>
 
-                  <button onClick={() => eliminarProducto(producto)}>
-                    <FaTrash />
-                  </button>
-                </div>
+              <td data-label="Stock">
+                <span className="table-mobile-value">
+                  <strong className="stock-number">{producto.stock}</strong>
+                </span>
+              </td>
+
+              <td data-label="Estado">
+                <span className="table-mobile-value">
+                  <span
+                    className={
+                      producto.disponibilidad
+                        ? "status-active"
+                        : "status-inactive"
+                    }
+                  >
+                    {producto.disponibilidad ? "Disponible" : "Oculto"}
+                  </span>
+                </span>
+              </td>
+
+              <td data-label="Acciones">
+                <span className="table-mobile-value">
+                  <div className="table-actions">
+                    <button
+                      type="button"
+                      className="edit-product-btn"
+                      onClick={() => editarProducto(producto)}
+                    >
+                      <FaEdit />
+                    </button>
+
+                    <button
+                      type="button"
+                      className="delete-product-btn"
+                      onClick={() => eliminarProducto(producto)}
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                </span>
               </td>
             </tr>
           ))}

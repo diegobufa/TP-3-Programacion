@@ -1,8 +1,12 @@
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext.jsx";
+
 const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
   const navigate = useNavigate();
+
+  const { openCart } = useCart();
 
   const buscar = () => {
     if (textoBusqueda.trim() === "") return;
@@ -56,7 +60,9 @@ const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
       <button>Ingresar</button>
 
       <div className="cart-btn">
-        🛒
+        <button onClick={openCart}>
+          🛒 Carrito
+        </button>
         <span>0</span>
       </div>
     </header>

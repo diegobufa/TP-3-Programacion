@@ -1,15 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
-
-const ESTADOS = ["pendiente", "confirmado", "enviado", "entregado", "cancelado"];
-
-const badgeColor = (estado) => ({
-    pendiente: "status-pendiente",
-    confirmado: "status-confirmado",
-    enviado: "status-enviado",
-    entregado: "status-entregado",
-    cancelado: "status-cancelado",
-}[estado] ?? "status-pendiente");
+import { ESTADO_PEDIDO, BADGE_COLOR_PEDIDO } from "../../constants/pedidosConstants";
 
 const PedidosTable = ({ pedidosFiltrados, pedidos, cambiarEstado }) => {
     const navigate = useNavigate();
@@ -38,7 +29,7 @@ const PedidosTable = ({ pedidosFiltrados, pedidos, cambiarEstado }) => {
                                 <td><strong>{p.numero_pedido}</strong></td>
                                 <td><strong style={{ color: "#16a34a" }}>{p.fk_usuario}</strong></td>
                                 <td>{new Date(p.fecha_pedido).toLocaleDateString("es-AR")}</td>
-                                <td><span className={badgeColor(p.estado)}>{p.estado}</span></td>
+                                <td><span className={BADGE_COLOR_PEDIDO[p.estado]}>{p.estado}</span></td>
                                 <td><strong style={{ color: "#00a8d8" }}>{p.detalles.reduce((acc, d) => acc + d.cantidad, 0)}</strong></td>
                                 <td>{p.direccion_envio}</td>
                                 <td>{p.localidad_envio}</td>
@@ -59,7 +50,7 @@ const PedidosTable = ({ pedidosFiltrados, pedidos, cambiarEstado }) => {
                                                 color: "#111827"
                                             }}
                                         >
-                                            {ESTADOS.map(e => <option key={e} value={e}>{e.charAt(0).toUpperCase() + e.slice(1)}</option>)}
+                                            {ESTADO_PEDIDO.map(e => <option key={e} value={e}>{e.charAt(0).toUpperCase() + e.slice(1)}</option>)}
                                         </select>
                                         <button onClick={() => navigate(`/admin/pedidos/${p.id}`)} style={{ color: "#00a8d8" }}>
                                             <FaEye />

@@ -1,4 +1,6 @@
-const UsuariosTable = ({ filtrados, usuarios, roles, cambiarRol }) => (
+import { ROLES, BADGE_COLOR_ROL } from "../../constants/usuariosContants";
+
+const UsuariosTable = ({ filtrados, usuarios, cambiarRol }) => (
     <div className="admin-table-card">
         <table className="admin-products-table">
             <thead>
@@ -20,7 +22,7 @@ const UsuariosTable = ({ filtrados, usuarios, roles, cambiarRol }) => (
                             <td><strong>{u.nombre} {u.apellido}</strong></td>
                             <td>{u.usuario}</td>
                             <td>{u.email}</td>
-                            <td><span className={u.fk_rol === 3 ? "status-confirmado" : u.fk_rol === 2 ? "status-enviado" : "status-active"}>{roles[u.fk_rol]}</span></td>
+                            <td><span className={BADGE_COLOR_ROL[u.fk_rol]}>{ROLES[u.fk_rol]}</span></td>
                             <td>
                                 <select 
                                     value={u.fk_rol}

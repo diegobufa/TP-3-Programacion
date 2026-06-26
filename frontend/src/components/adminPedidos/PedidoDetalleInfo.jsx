@@ -1,11 +1,4 @@
-const badgeColor = (estado) => ({
-    confirmado: "status-confirmado",
-    enviado: "status-enviado",
-    entregado: "status-entregado",
-    pendiente: "status-pendiente",
-    cancelado: "status-cancelado",
-}[estado] ?? "status-pendiente");
-
+import { BADGE_COLOR_PEDIDO } from "../../constants/pedidosConstants";
 const PedidoDetalleInfo = ({ pedido }) => {
     const total = pedido.detalles.reduce((acc, d) => acc + d.precio_subtotal, 0);
     const cantidad = pedido.detalles.reduce((acc, d) => acc + d.cantidad, 0);
@@ -16,7 +9,7 @@ const PedidoDetalleInfo = ({ pedido }) => {
                 {[
                     { label: "Nº Pedido", value: pedido.numero_pedido },
                     { label: "Fecha", value: new Date(pedido.fecha_pedido).toLocaleDateString("es-AR") },
-                    { label: "Estado", value: <span className={badgeColor(pedido.estado)}>{pedido.estado}</span> },
+                    { label: "Estado", value: <span className={BADGE_COLOR_PEDIDO[pedido.estado]}>{pedido.estado}</span> },
                     { label: "Dirección", value: pedido.direccion_envio },
                     { label: "Localidad", value: pedido.localidad_envio },
                     { label: "Provincia", value: pedido.provincia_envio },

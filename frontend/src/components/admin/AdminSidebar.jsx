@@ -45,16 +45,9 @@ const AdminSidebar = ({ abierto, onCerrar }) => {
         <NavLink to="/admin/pedidos" className={getLinkClass} onClick={onCerrar} >
           <FaClipboardList /> Pedidos
         </NavLink>
-
-        
         <NavLink to="/admin/usuarios" className={getLinkClass} onClick={onCerrar} >
           <FaUsers /> Usuarios
         </NavLink>
-        {/*
-        <NavLink to="/admin/config" className={getLinkClass} onClick={onCerrar} >
-          <FaCog /> Configuración
-        </NavLink>
-        */}
       </nav>
     </aside>
   </>
