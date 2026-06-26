@@ -1,37 +1,37 @@
-import { API_URL } from "../constants/productConstants";
+import { BASE_URL } from "../constants/productConstants";
 
 export const authService = {
   
   registro: async (datosUsuario) => {
-    const res = await fetch(`${API_URL}/auth/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datosUsuario) 
-    });
-    
-    if (!res.ok) {
-      const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData.message || "Error al registrar usuario");
-    }
-    return res.json();
-  },
+  const res = await fetch(`${ BASE_URL } /auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(datosUsuario)
+  });
 
-  login: async (email, password) => {
-    const res = await fetch(`${API_URL}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
-    });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.message || "Error al registrar usuario");
+  }
 
-    if (!res.ok) {
-      const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData.message || "Credenciales incorrectas");
-    }
+  return res.json();
+},
 
-    const token = await res.text();
-    
-    return token ;
-  },
+login: async (email, password) => {
+  const res = await fetch(`${BASE_URL}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.message || "Credenciales incorrectas");
+  }
+
+  const token = await res.json();
+  return token;
+},
 
   getUsuarios: async (token) => {
     const res = await fetch(`${API_URL}/usuarios`, {
