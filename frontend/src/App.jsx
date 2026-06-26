@@ -7,6 +7,7 @@ import AdminLayout from "./components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminPedidos from "./pages/admin/AdminPedidos";
 import AdminPedidoDetalle from "./pages/admin/AdminPedidoDetalle";
+import AdminUsuarios from "./pages/admin/AdminUsuarios";
 import { ToastContainer } from "react-toastify";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="dashboard" element={<AdminDashboard/>} />
           <Route path="pedidos" element={<AdminPedidos/>} />
           <Route path="pedidos/:id" element={<AdminPedidoDetalle/>} />
+          <Route path="usuarios" element={<AdminUsuarios/>} />
         </Route>
       </Routes>
       <ToastContainer

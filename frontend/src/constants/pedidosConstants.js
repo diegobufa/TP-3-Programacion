@@ -1,0 +1,1 @@
+export const PEDIDOS_URL = `${import.meta.env.VITE_API_URL}/pedidos`

@@ -11,7 +11,7 @@ const AdminLayout = () => {
         <div className="admin-layout">
             <AdminSideBar abierto={sidebarAbierto} onCerrar={() => setSidebarAbierto(false)} />
             <main className="admin-main">
-                <AdminTopBar titulo="Panel Admin" onToggleSidebar={() => setSidebarAbierto(!sidebarAbierto)} sidebarAbierto={sidebarAbierto} />
+                <AdminTopBar onToggleSidebar={() => setSidebarAbierto(!sidebarAbierto)} sidebarAbierto={sidebarAbierto} />
                 <section className="admin-content">
                     <Outlet/>
                 </section>

@@ -46,11 +46,11 @@ const AdminSidebar = ({ abierto, onCerrar }) => {
           <FaClipboardList /> Pedidos
         </NavLink>
 
-        {/*
-        <NavLink to="/admin/clientes" className={getLinkClass} onClick={onCerrar} >
-          <FaUsers /> Clientes
+        
+        <NavLink to="/admin/usuarios" className={getLinkClass} onClick={onCerrar} >
+          <FaUsers /> Usuarios
         </NavLink>
-
+        {/*
         <NavLink to="/admin/config" className={getLinkClass} onClick={onCerrar} >
           <FaCog /> Configuración
         </NavLink>

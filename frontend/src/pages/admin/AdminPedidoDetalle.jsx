@@ -31,8 +31,13 @@ const AdminPedidoDetalle = () => {
                 <h4 className="fw-bold mb-0">Detalle del Pedido</h4>
                 <button className="clear-admin-filters-btn px-3" onClick={() => navigate("/admin/pedidos")}>← Volver</button>
             </div>
-            <PedidoDetalleInfo pedido={pedido} />
-            <PedidoDetalleProductos detalles={pedido.detalles} productos={productos} />
+            <PedidoDetalleInfo 
+                pedido={pedido} 
+            />
+            <PedidoDetalleProductos 
+                detalles={pedido.detalles} 
+                productos={productos} 
+            />
         </>
     );
 };

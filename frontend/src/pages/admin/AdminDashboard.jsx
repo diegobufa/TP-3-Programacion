@@ -24,9 +24,16 @@ const AdminDashboard = () => {
   return (
     <>
       <h4 className="fw-bold mb-4">Dashboard</h4>
-      <MetricasGrid pedidos={pedidos} productos={productos} />
-      <UltimosPedidos pedidos={pedidos} />
-      <UltimosProductos productos={productos} />
+      <MetricasGrid 
+        pedidos={pedidos} 
+        productos={productos} 
+      />
+      <UltimosPedidos 
+        pedidos={pedidos} 
+      />
+      <UltimosProductos 
+        productos={productos} 
+      />
     </>
   );
 };

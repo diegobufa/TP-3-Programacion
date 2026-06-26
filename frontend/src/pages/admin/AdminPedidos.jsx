@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getPedidos } from "../../services/pedidosApi";
 import PedidosTable from "../../components/adminPedidos/PedidosTable";
 
 const ESTADOS = ["todos", "pendiente", "confirmado", "enviado", "entregado", "cancelado"];

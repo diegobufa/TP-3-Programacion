@@ -1,11 +1,11 @@
 import { FaBars } from "react-icons/fa";
 
-const AdminTopbar = ({ titulo = "Admin", onToggleSidebar, sidebarAbierto }) => {
+const AdminTopbar = ({ onToggleSidebar, sidebarAbierto }) => {
   return (
     <header className="admin-topbar">
       <div className="admin-title">
         <FaBars className="admin-hamburguer" style={{ cursor: "pointer" }} onClick={onToggleSidebar} />
-        {!sidebarAbierto && <h2>{titulo}</h2>}
+        {!sidebarAbierto && <h2>Panel Admin</h2>}
       </div>
 
       <div className="admin-profile">
