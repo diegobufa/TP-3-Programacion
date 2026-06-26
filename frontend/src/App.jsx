@@ -10,8 +10,9 @@ import AdminPedidos from "./pages/admin/AdminPedidos";
 import AdminPedidoDetalle from "./pages/admin/AdminPedidoDetalle";
 import { ToastContainer } from "react-toastify";
 import { CartProvider } from "./context/CartContext.jsx";
+import { AdminOrdersProvider } from "./context/AdminOrdersContext.jsx";
 import { CarritoPage } from "./pages/CarritoPage.jsx";
-import { CheckoutPage } from "./pages/CheckoutPage.jsx";
+import CheckoutPage from "./pages/CheckoutPage.jsx";
 import { MisPedidosPage } from "./pages/MisPedidosPage.jsx";
 import { DetallePedidoPage } from "./pages/DetallePedidoPage.jsx";
 import { CartSidebar } from "./components/CartSidebar.jsx";
@@ -24,7 +25,8 @@ function DetallePedidoWrapper() {
 function App() {
   return (
     <CartProvider>
-      <BrowserRouter>
+      <AdminOrdersProvider>
+        <BrowserRouter>
         <CartSidebar />
         <Routes>
           <Route path="/" element={<Dashboard />} />
@@ -51,7 +53,8 @@ function App() {
           draggable
           theme="colored"
         />
-      </BrowserRouter>
+        </BrowserRouter>
+      </AdminOrdersProvider>
     </CartProvider>
   );
 }

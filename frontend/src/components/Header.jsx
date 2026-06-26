@@ -1,12 +1,16 @@
-import { FaSearch } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { FaSearch, FaShoppingCart } from "react-icons/fa";
+import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../context/CartContext.jsx";
 
 const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
   const navigate = useNavigate();
 
-  const { openCart } = useCart();
+  const { openCart, cart } = useCart();
+
+  const cantidadCarrito = cart.reduce(
+    (acc, item) => acc + Number(item.quantity || 0),
+    0,
+  );
 
   const buscar = () => {
     if (textoBusqueda.trim() === "") return;
@@ -52,18 +56,24 @@ const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
           onKeyDown={handleKeyDown}
         />
 
-        <button className="search-btn" onClick={buscar}>
+        <button className="search-btn" onClick={buscar} type="button">
           <FaSearch />
         </button>
       </div>
 
-      <button>Ingresar</button>
+      <button type="button">Ingresar</button>
 
       <div className="cart-btn">
-        <button onClick={openCart}>
-          🛒 Carrito
+        <button
+          type="button"
+          className="cart-icon-btn"
+          onClick={openCart}
+          aria-label="Abrir carrito"
+        >
+          <FaShoppingCart />
         </button>
-        <span>0</span>
+
+        {cantidadCarrito > 0 && <span>{cantidadCarrito}</span>}
       </div>
     </header>
   );

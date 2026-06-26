@@ -1,9 +1,7 @@
 import {
   FaBoxOpen,
   FaClipboardList,
-  FaUsers,
-  FaTags,
-  FaCog
+  FaTags
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
