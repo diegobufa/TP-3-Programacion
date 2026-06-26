@@ -1813,6 +1813,20 @@ img {
   }
 }
 
+/* =========================================================
+   24. RESPONSIVE - GENERAL
+   ========================================================= */
+
+@media (max-width: 1300px) {
+  .admin-actions-bar {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .new-product-btn {
+    grid-column: span 2;
+  }
+}
+
 @media (max-width: 1560px) {
   .admin-actions-bar,
   .admin-form-preview {
@@ -2133,10 +2147,6 @@ img {
 
   .detail-buy-card h2 {
     font-size: 30px;
-  }
-
-  .metricas-grid {
-    grid-template-columns: 1.fr;
   }
 }
 
