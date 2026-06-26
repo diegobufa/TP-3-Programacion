@@ -42,6 +42,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (location.state) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCategoriaSeleccionada(
         location.state.categoriaSeleccionada || "Catalogo",
       );

@@ -1,4 +1,4 @@
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { formatoPrecio } from "../../utils/formatPrice";
 
 const ProductTable = ({
@@ -6,6 +6,7 @@ const ProductTable = ({
   productos,
   editarProducto,
   eliminarProducto,
+  verDetalleProducto,
 }) => {
   return (
     <div className="admin-table-card">
@@ -86,9 +87,14 @@ const ProductTable = ({
                     <button
                       type="button"
                       className="edit-product-btn"
-                      onClick={() => editarProducto(producto)}
+                      title={verDetalleProducto ? "Ver detalle" : "Editar producto"}
+                      onClick={() =>
+                        verDetalleProducto
+                          ? verDetalleProducto(producto)
+                          : editarProducto(producto)
+                      }
                     >
-                      <FaEdit />
+                      {verDetalleProducto ? <FaEye /> : <FaEdit />}
                     </button>
 
                     <button

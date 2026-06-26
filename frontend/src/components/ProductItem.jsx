@@ -1,5 +1,6 @@
 import { Badge, Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext.jsx";
 
 const ProductItem = ({
   id,
@@ -13,6 +14,7 @@ const ProductItem = ({
   oferta,
 }) => {
   const navigate = useNavigate();
+  const { addToCart, openCart } = useCart();
 
   const irAlDetalle = () => {
     navigate(`/producto/${id}`);
@@ -21,8 +23,23 @@ const ProductItem = ({
   const agregarAlCarrito = (e) => {
     e.stopPropagation();
 
-    // Acá después va la lógica real del carrito
-    console.log("Agregar al carrito:", id);
+    const producto = {
+      id,
+      nombre,
+      descripcion,
+      precio,
+      stock,
+      categoria,
+      marca,
+      imageUrl,
+      oferta,
+    };
+
+    const agregado = addToCart(producto, 1);
+
+    if (agregado) {
+      openCart();
+    }
   };
 
   return (
@@ -73,7 +90,12 @@ const ProductItem = ({
             Ver detalle
           </Button>
 
-          <Button className="cart-button" onClick={agregarAlCarrito}>
+          <Button
+            type="button"
+            className="cart-button"
+            onClick={agregarAlCarrito}
+            disabled={Number(stock) <= 0}
+          >
             🛒 Agregar
           </Button>
         </div>

@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import CategoriesNav from "./CategoriesNav";
 import Footer from "./Footer";
+import { useCart } from "../context/CartContext.jsx";
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { addToCart, openCart } = useCart();
 
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,17 +17,15 @@ const ProductDetail = () => {
   const [modalImagenAbierto, setModalImagenAbierto] = useState(false);
 
   const [textoBusqueda, setTextoBusqueda] = useState("");
-  const [busqueda, setBusqueda] = useState("");
-  const [categoriaSeleccionada, setCategoriaSeleccionada] =
-    useState("Catalogo");
-  const [mostrarTodos, setMostrarTodos] = useState(false);
+  const [, setBusqueda] = useState("");
+  const [, setCategoriaSeleccionada] = useState("Catalogo");
+  const [, setMostrarTodos] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:3000/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        const imagenDefault =
-          data.imageUrl || "https://picsum.photos/500/400";
+        const imagenDefault = data.imageUrl || "https://picsum.photos/500/400";
 
         setProducto(data);
         setImagenPrincipal(imagenDefault);
@@ -50,19 +51,15 @@ const ProductDetail = () => {
 
   const stockDisponible = Number(producto.stock) || 0;
 
-  const imagenDefault =
-    producto.imageUrl || "https://picsum.photos/500/400";
+  const imagenDefault = producto.imageUrl || "https://picsum.photos/500/400";
 
   const imagenesAdicionales = Array.isArray(producto.imagenes)
     ? producto.imagenes
     : [];
 
-  const imagenesProducto = [
-    imagenDefault,
-    ...imagenesAdicionales,
-  ].filter((imagen, index, array) => {
-    return imagen && array.indexOf(imagen) === index;
-  });
+  const imagenesProducto = [imagenDefault, ...imagenesAdicionales].filter(
+    (imagen, index, array) => imagen && array.indexOf(imagen) === index,
+  );
 
   const sumarCantidad = () => {
     setCantidad((cantidadActual) => {
@@ -82,6 +79,22 @@ const ProductDetail = () => {
 
       return cantidadActual;
     });
+  };
+
+  const handleAgregarAlCarrito = () => {
+    const agregado = addToCart(producto, cantidad);
+
+    if (agregado) {
+      openCart();
+    }
+  };
+
+  const handleComprarAhora = () => {
+    const agregado = addToCart(producto, cantidad);
+
+    if (agregado) {
+      navigate("/checkout");
+    }
   };
 
   return (
@@ -151,22 +164,16 @@ const ProductDetail = () => {
 
           <section className="detail-info">
             <div className="detail-tags">
-              <span className="product-detail-category">
-                {producto.categoria}
-              </span>
+              <span className="product-detail-category">{producto.categoria}</span>
 
               {producto.marca && producto.marca !== "Sin marca" && (
-                <span className="product-detail-brand">
-                  {producto.marca}
-                </span>
+                <span className="product-detail-brand">{producto.marca}</span>
               )}
             </div>
 
             <h1>{producto.nombre}</h1>
 
-            <p className="product-detail-description">
-              {producto.descripcion}
-            </p>
+            <p className="product-detail-description">{producto.descripcion}</p>
           </section>
 
           <aside className="detail-buy-card">
@@ -199,15 +206,19 @@ const ProductDetail = () => {
             </div>
 
             <button
+              type="button"
               className="add-cart-detail"
               disabled={stockDisponible === 0}
+              onClick={handleAgregarAlCarrito}
             >
               🛒 Agregar al carrito
             </button>
 
             <button
+              type="button"
               className="buy-now-detail"
               disabled={stockDisponible === 0}
+              onClick={handleComprarAhora}
             >
               Comprar ahora
             </button>
