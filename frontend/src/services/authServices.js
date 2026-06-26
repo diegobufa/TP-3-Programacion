@@ -1,6 +1,6 @@
 import { API_URL } from "../constants/productConstants";
 
-export const authservices = {
+export const authService = {
   
   registro: async (datosUsuario) => {
     const res = await fetch(`${API_URL}/auth/register`, {

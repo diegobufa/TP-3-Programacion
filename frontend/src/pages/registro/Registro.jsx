@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { authService } from '../services/authService';
+import { authService } from '../../services/authServices';
 import { useNavigate } from 'react-router-dom';
 
 export default function Registro() {

@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import { authService } from '../services/authService';
+import { AuthContext } from "../../context/authContext";
+import { authService } from '../../services/authServices';
 
 export default function AdminUsuarios() {
   const [usuarios, setUsuarios] = useState([]);

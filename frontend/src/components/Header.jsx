@@ -1,8 +1,13 @@
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/authContext";
+
 const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
   const navigate = useNavigate();
+
+  const { user, logoutUser } = useContext(AuthContext);
 
   const buscar = () => {
     if (textoBusqueda.trim() === "") return;
@@ -24,6 +29,7 @@ const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
       buscar();
     }
   };
+
 
   return (
     <header className="header">
@@ -53,7 +59,28 @@ const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
         </button>
       </div>
 
-      <button>Ingresar</button>
+      <div className="auth-buttons-container" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+        
+        {!user ? (
+          <button onClick={() => navigate("/login")} className="login-btn">
+            Ingresar
+          </button>
+        ) : (
+          <>
+            {user.fk_rol === 3 && (
+              <Link to="/admin/usuarios" style={{ color: "#007bff", textDecoration: "none", fontWeight: "bold" }}>
+                ⚙️ Panel Usuarios
+              </Link>
+            )}
+
+            <span style={{ fontSize: "14px", color: "#555" }}>{user.email}</span>
+
+            <button onClick={logoutUser} className="logout-btn">
+              Cerrar Sesión
+            </button>
+          </>
+        )}
+      </div>
 
       <div className="cart-btn">
         🛒
