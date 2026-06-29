@@ -1,6 +1,6 @@
-import { useContext } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { AuthContext } from '../../context/authContext';
+import { useContext } from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { AuthContext } from "../../context/authContext";
 
 export default function ProtectedRoute({ allowedRoles }) {
   const { user } = useContext(AuthContext);
@@ -9,8 +9,8 @@ export default function ProtectedRoute({ allowedRoles }) {
     return <Navigate to="/login" replace />;
   }
 
-  if (!allowedRoles.includes(user.fk_rol)) {
-    return <Navigate to="/" replace />; 
+  if (!allowedRoles.includes(Number(user.fk_rol))) {
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

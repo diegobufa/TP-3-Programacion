@@ -6,7 +6,7 @@ import Footer from "./Footer";
 const PublicPageLayout = ({ children }) => {
   const [textoBusqueda, setTextoBusqueda] = useState("");
   const [, setBusqueda] = useState("");
-  const [, setCategoriaSeleccionada] = useState("Catalogo");
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Catalogo");
   const [, setMostrarTodos] = useState(false);
 
   return (
@@ -18,6 +18,7 @@ const PublicPageLayout = ({ children }) => {
       />
 
       <CategoriesNav
+        categoriaSeleccionada={categoriaSeleccionada}
         setCategoriaSeleccionada={setCategoriaSeleccionada}
         setMostrarTodos={setMostrarTodos}
         setBusqueda={setBusqueda}

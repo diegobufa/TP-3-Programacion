@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { authService } from '../../services/authServices';
 import { useNavigate, Link } from 'react-router-dom';
 import Header from '../../components/Header';
+import { toast } from 'react-toastify';
 import Footer from '../../components/Footer';
 
 export default function Registro() {
@@ -88,13 +89,14 @@ export default function Registro() {
     try {
       await authService.registro(formData);
       setSuccess(true);
-      alert('¡Usuario registrado correctamente!');
+      toast.success('Usuario registrado correctamente');
       setTimeout(() => {
         setSuccess(false);
         navigate('/login');
       }, 1500);
     } catch (err) {
       setError(err.message);
+      toast.error(err.message || 'No se pudo registrar el usuario');
     } finally {
       setLoading(false);
     }

@@ -4,6 +4,7 @@ import { AuthContext } from "../context/authContext";
 import PublicPageLayout from "../components/PublicPageLayout.jsx";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authServices";
+import { toast } from "react-toastify";
 
 const obtenerDireccionUsuario = (user) => {
   const calleAltura = [user?.calle, user?.altura].filter(Boolean).join(" ").trim();
@@ -93,19 +94,19 @@ const CheckoutPage = () => {
     e.preventDefault();
 
     if (!user?.id) {
-      alert("Tenés que iniciar sesión para confirmar el pedido");
+      toast.warning("Tenés que iniciar sesión para confirmar el pedido");
       navigate("/login");
       return;
     }
 
     if (cart.length === 0) {
-      alert("El carrito está vacío");
+      toast.warning("El carrito está vacío");
       return;
     }
 
     const errorDatos = validarDatosEnvio();
     if (errorDatos) {
-      alert(`${errorDatos}. Revisá los datos antes de confirmar el pedido.`);
+      toast.warning(`${errorDatos}. Revisá los datos antes de confirmar el pedido.`);
       setEditarDatos(true);
       return;
     }
@@ -118,10 +119,10 @@ const CheckoutPage = () => {
         fk_usuario: user.id,
       });
 
-      alert(`Compra realizada con éxito. Pedido N° ${pedidoCreado.numero_pedido}`);
+      toast.success(`Compra realizada con éxito. Pedido N° ${pedidoCreado.numero_pedido}`);
       navigate("/mis-pedidos");
     } catch (error) {
-      alert(error.message || "No se pudo confirmar el pedido");
+      toast.error(error.message || "No se pudo confirmar el pedido");
     } finally {
       setProcesando(false);
     }

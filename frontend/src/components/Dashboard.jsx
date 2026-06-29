@@ -168,6 +168,7 @@ const Dashboard = () => {
       />
 
       <CategoriesNav
+        categoriaSeleccionada={categoriaSeleccionada}
         setCategoriaSeleccionada={setCategoriaSeleccionada}
         setMostrarTodos={setMostrarTodos}
         setBusqueda={setBusqueda}

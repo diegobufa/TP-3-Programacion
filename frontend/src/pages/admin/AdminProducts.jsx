@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import AdminTopbar from "../../components/admin/AdminTopbar";
 import AdminProductToolbar from "../../components/adminProducts/AdminProductToolbar";
 import ProductAdminForm from "../../components/adminProducts/ProductAdminForm";
 import ProductPreview from "../../components/adminProducts/ProductPreview";
@@ -293,58 +292,46 @@ const AdminProducts = () => {
   };
 
   return (
-    <div className="admin-layout" style={{ display: "flex", minHeight: "100vh", width: "100%" }}>
-      
-      <main className="admin-main-container" style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
-        <AdminTopbar title="Gestión de Inventario" />
+    <>
+      <AdminProductToolbar
+        busqueda={busqueda}
+        setBusqueda={setBusqueda}
+        categoriaFiltro={categoriaFiltro}
+        setCategoriaFiltro={setCategoriaFiltro}
+        marcaFiltro={marcaFiltro}
+        setMarcaFiltro={setMarcaFiltro}
+        marcasDisponibles={marcasDisponibles}
+        ordenAdmin={ordenAdmin}
+        setOrdenAdmin={setOrdenAdmin}
+        limpiarFiltrosAdmin={limpiarFiltrosAdmin}
+        abrirNuevoProducto={abrirNuevoProducto}
+        soloOfertas={soloOfertas}
+        setSoloOfertas={setSoloOfertas}
+      />
 
-        <section className="admin-content-page" style={{ padding: "24px", flex: 1 }}>
-          <AdminProductToolbar
-            busqueda={busqueda}
-            setBusqueda={setBusqueda}
-            categoriaFiltro={categoriaFiltro}
-            setCategoriaFiltro={setCategoriaFiltro}
-            marcaFiltro={marcaFiltro}
-            setMarcaFiltro={setMarcaFiltro}
-            marcasDisponibles={marcasDisponibles}
-            ordenAdmin={ordenAdmin}
-            setOrdenAdmin={setOrdenAdmin}
-            limpiarFiltrosAdmin={() => {
-              setBusqueda("");
-              setCategoriaFiltro("Todas");
-              setMarcaFiltro("Todas");
-              setSoloOfertas(false);
-            }}
-            abrirNuevoProducto={abrirNuevoProducto}
-            soloOfertas={soloOfertas}
-            setSoloOfertas={setSoloOfertas}
+      {mostrarFormulario && (
+        <div className="admin-form-preview" ref={formSectionRef}>
+          <ProductAdminForm
+            form={form}
+            errores={errores}
+            editandoId={editandoId}
+            loading={loading}
+            handleChange={handleChange}
+            handleImagenChange={handleImagenChange}
+            handleSubmit={handleSubmit}
+            limpiarFormulario={limpiarFormulario}
+            cerrarFormulario={cerrarFormulario}
           />
+          <ProductPreview form={form} />
+        </div>
+      )}
 
-          {mostrarFormulario && (
-            <div className="admin-form-preview" ref={formSectionRef} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "24px" }}>
-              <ProductAdminForm
-                form={form}
-                errores={errores}
-                editandoId={editandoId}
-                loading={loading}
-                handleChange={() => {}}
-                handleImagenChange={() => {}}
-                handleSubmit={() => {}}
-                limpiarFormulario={limpiarFormulario}
-                cerrarFormulario={cerrarFormulario}
-              />
-              <ProductPreview form={form} />
-            </div>
-          )}
-
-          <ProductTable
-            productosFiltrados={productosFiltrados}
-            productos={productos}
-            editarProducto={() => {}}
-            eliminarProducto={abrirModalEliminar}
-          />
-        </section>
-      </main>
+      <ProductTable
+        productosFiltrados={productosFiltrados}
+        productos={productos}
+        editarProducto={editarProducto}
+        eliminarProducto={abrirModalEliminar}
+      />
 
       <ConfirmDeleteModal
         producto={productoAEliminar}
@@ -352,7 +339,7 @@ const AdminProducts = () => {
         confirmarEliminar={confirmarEliminarProducto}
         eliminando={eliminando}
       />
-    </div>
+    </>
   );
 };
 
