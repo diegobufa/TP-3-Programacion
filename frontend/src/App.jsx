@@ -54,12 +54,9 @@ function App() {
                   <Route path="usuarios" element={<AdminUsuarios />} />
                   <Route path="productos" element={<AdminProducts />} />
 
-                  <Route 
-                    path="usuarios" 
-                    element={
-                      <ProtectedRoute allowedRoles={[3]}>
-                        <AdminUsuarios />
-                      </ProtectedRoute>
+                  <Route element={<ProtectedRoute allowedRoles={[3]}>
+                        <Route path="usuarios" element={<AdminUsuarios />} />
+                    </ProtectedRoute>
                     } 
                   />
                 </Route>

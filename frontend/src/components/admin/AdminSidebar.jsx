@@ -24,7 +24,8 @@ const AdminSidebar = ({ abierto, onCerrar }) => {
       />
     )}
     <aside className={`admin-sidebar admin-sidebar-drawer ${abierto ? "admin-sidebar-open" : ""}`}>
-      <div className="admin-logo"><Link
+      <div className="admin-logo"><h2>ElectroFest</h2></div>
+      <Link
         to="/"
         state={{
           categoriaSeleccionada: "Catalogo",
@@ -33,8 +34,8 @@ const AdminSidebar = ({ abierto, onCerrar }) => {
         }}
         className="logo-link"
       >
-        <h2>ElectroFest</h2>
-      </Link></div>
+        <h3>ElectroFest</h3>
+      </Link>
 
       <div className="admin-user">
         <div className="admin-avatar">A</div>
@@ -58,15 +59,11 @@ const AdminSidebar = ({ abierto, onCerrar }) => {
           <FaClipboardList /> Pedidos
         </NavLink>
 
-        {user && (user.fk_rol === 2 || user.fk_rol === 3) && (
-          <NavLink
-            to="/admin/usuarios"
-            className={getLinkClass}
-            onClick={onCerrar}
-          >
-            <FaUsers /> Usuarios y Roles
-          </NavLink>
-        )}
+        {user && Number(user.fk_rol) === 3 && (
+  <NavLink to="/admin/usuarios" className={getLinkClass} onClick={onCerrar}>
+    <FaUsers /> Usuarios y Roles
+  </NavLink>
+)}
         {/*
         <NavLink to="/admin/config" className={getLinkClass} onClick={onCerrar} >
           <FaCog /> Configuración

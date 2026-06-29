@@ -67,7 +67,7 @@ const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
     ) : (
       <>
         {user && [2, 3].includes(user.fk_rol) && (
-          <Link to="/admin/usuarios" className="login-btn admin-panel-btn">
+          <Link to="/admin" className="login-btn admin-panel-btn">
             ⚙️ Panel Admin
           </Link>
         )}
