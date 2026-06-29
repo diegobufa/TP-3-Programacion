@@ -65,28 +65,27 @@ const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
         </button>
       </div>
 
-      <div className="auth-buttons-container" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-        
-        {!user ? (
-          <button onClick={() => navigate("/login")} className="login-btn">
-            Ingresar
-          </button>
-        ) : (
-          <>
-        {user && [2, 3].includes(user.fk_rol) && (
-          <Link to="/admin/usuarios" style={{ color: "#007bff", textDecoration: "none", fontWeight: "bold" }}>
-            ⚙️ Panel Usuarios
-          </Link>
-        )}
+      <div className="auth-buttons-container">
+  {!user ? (
+    <button onClick={() => navigate("/login")} className="login-btn">
+      Ingresar
+    </button>
+  ) : (
+    <>
+      {user && [2, 3].includes(user.fk_rol) && (
+        <Link to="/admin/usuarios" className="login-btn admin-panel-btn">
+        Panel Usuarios
+        </Link>
+      )}
 
-            <span style={{ fontSize: "14px", color: "#555" }}>{user.email}</span>
+      <span className="user-email-display">{user.email}</span>
 
-            <button onClick={logoutUser} className="logout-btn">
-              Cerrar Sesión
-            </button>
-          </>
-        )}
-      </div>
+      <button onClick={logoutUser} className="logout-btn">
+        Cerrar Sesión
+      </button>
+    </>
+  )}
+</div>
 
       <div className="cart-btn">
         <button

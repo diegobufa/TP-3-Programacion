@@ -43,15 +43,25 @@ export const authService = {
   },
 
   getUsuarios: async (token) => {
-    const res = await fetch(`${API_URL}/usuarios`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!res.ok) throw new Error("No autorizado");
-    return res.json();
-  },
+  const res = await fetch(`${BASE_URL}/usuarios`, { 
+    method: "GET",
+    headers: { 
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}` 
+    },
+  });
+  
+  if (!res.ok) {
+    if (res.status === 401 || res.status === 403) {
+      throw new Error("No tienes los permisos de Administrador necesarios.");
+    }
+    throw new Error(`Error del servidor (Código ${res.status})`);
+  }
+  return res.json();
+},
 
   actualizarRol: async (id, fk_rol, token) => {
-    const res = await fetch(`${API_URL}/usuarios/${id}`, {
+    const res = await fetch(`${BASE_URL}/usuarios/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +73,7 @@ export const authService = {
   },
 
   eliminarUsuario: async (id, token) => {
-    const res = await fetch(`${API_URL}/usuarios/${id}`, {
+    const res = await fetch(`${BASE_URL}/usuarios/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
