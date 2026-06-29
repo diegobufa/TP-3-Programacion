@@ -27,15 +27,15 @@ const UltimosPedidos = ({ pedidos }) => {
           </tr>
         </thead>
         <tbody>
-          {pedidos.slice(-5).length === 0
-            ? <tr><td colSpan={4} className="empty-products">Sin pedidos</td></tr>
-            : pedidos.slice(-5).map(p => (
+          {pedidos.slice(0, 5).length === 0
+            ? <tr><td colSpan={5} className="empty-products">Sin pedidos</td></tr>
+            : pedidos.slice(0, 5).map(p => (
               <tr key={p.id}>
                 <td><strong>{p.numero_pedido}</strong></td>
                 <td><span className={badgeColor(p.estado)}>{p.estado}</span></td>
                 <td><strong style={{ color: "#16a34a" }}>{p.detalles.reduce((acc, d) => acc + d.cantidad, 0)}</strong></td>
                 <td>{p.direccion_envio}</td>
-                <td><strong style={{ color: "#16a34a" }}>${p.detalles.reduce((acc, d) => acc + d.precio_subtotal, 0).toLocaleString("es-AR")}</strong></td>
+                <td><strong style={{ color: "#16a34a" }}>${p.detalles.reduce((acc, d) => acc + Number(d.precio_subtotal), 0).toLocaleString("es-AR")}</strong></td>
               </tr>
             ))}
         </tbody>

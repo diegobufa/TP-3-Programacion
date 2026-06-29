@@ -5,7 +5,7 @@ import { useAdminOrders } from "../../context/AdminOrdersContext.jsx";
 const ESTADOS = ["todos", "pendiente", "confirmado", "enviado", "entregado", "cancelado"];
 
 const AdminPedidos = () => {
-  const { pedidos, actualizarEstadosPedidos } = useAdminOrders();
+  const { pedidos, cargandoPedidos, actualizarEstadosPedidos } = useAdminOrders();
   const [filtros, setFiltros] = useState({ estado: "todos", cliente: "", fecha: "" });
   const [cambiosEstado, setCambiosEstado] = useState({});
 
@@ -27,13 +27,17 @@ const AdminPedidos = () => {
     });
   };
 
-  const guardarCambios = () => {
+  const guardarCambios = async () => {
     const cantidadCambios = Object.keys(cambiosEstado).length;
 
     if (cantidadCambios === 0) return;
 
-    actualizarEstadosPedidos(cambiosEstado);
-    setCambiosEstado({});
+    try {
+      await actualizarEstadosPedidos(cambiosEstado);
+      setCambiosEstado({});
+    } catch (error) {
+      alert(error.message || "No se pudieron guardar los cambios");
+    }
   };
 
   const cancelarCambios = () => {
@@ -53,6 +57,10 @@ const AdminPedidos = () => {
   });
 
   const hayCambiosPendientes = Object.keys(cambiosEstado).length > 0;
+
+  if (cargandoPedidos) {
+    return <p className="empty-products">Cargando pedidos...</p>;
+  }
 
   return (
     <>

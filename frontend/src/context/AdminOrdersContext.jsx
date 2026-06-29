@@ -1,43 +1,45 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { PEDIDOS_MOCK } from "../data/pedidosMock";
+import { getOrders, updateOrderStatus } from "../services/orderApi";
 
 const AdminOrdersContext = createContext(null);
-const STORAGE_KEY = "admin_pedidos";
-
-const obtenerPedidosIniciales = () => {
-  try {
-    const pedidosGuardados = localStorage.getItem(STORAGE_KEY);
-    const pedidosParseados = JSON.parse(pedidosGuardados);
-
-    if (Array.isArray(pedidosParseados)) {
-      return pedidosParseados;
-    }
-  } catch {
-    // Si localStorage falla, usamos los datos mock.
-  }
-
-  return PEDIDOS_MOCK;
-};
 
 export const AdminOrdersProvider = ({ children }) => {
-  const [pedidos, setPedidos] = useState(obtenerPedidosIniciales);
+  const [pedidos, setPedidos] = useState([]);
+  const [cargandoPedidos, setCargandoPedidos] = useState(true);
+
+  const obtenerPedidos = async () => {
+    try {
+      setCargandoPedidos(true);
+      const data = await getOrders();
+      setPedidos(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.log("Error al obtener pedidos:", error);
+      setPedidos([]);
+    } finally {
+      setCargandoPedidos(false);
+    }
+  };
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(pedidos));
-  }, [pedidos]);
+    obtenerPedidos();
+  }, []);
 
-  const actualizarEstadosPedidos = (cambiosEstado) => {
-    setPedidos((prevPedidos) =>
-      prevPedidos.map((pedido) => {
-        const nuevoEstado = cambiosEstado[pedido.id];
+  const actualizarEstadosPedidos = async (cambiosEstado) => {
+    const cambios = Object.entries(cambiosEstado);
 
-        return nuevoEstado ? { ...pedido, estado: nuevoEstado } : pedido;
-      })
+    if (cambios.length === 0) return;
+
+    await Promise.all(
+      cambios.map(([id, estado]) => updateOrderStatus(id, estado))
     );
+
+    await obtenerPedidos();
   };
 
   return (
-    <AdminOrdersContext.Provider value={{ pedidos, actualizarEstadosPedidos }}>
+    <AdminOrdersContext.Provider
+      value={{ pedidos, cargandoPedidos, obtenerPedidos, actualizarEstadosPedidos }}
+    >
       {children}
     </AdminOrdersContext.Provider>
   );
