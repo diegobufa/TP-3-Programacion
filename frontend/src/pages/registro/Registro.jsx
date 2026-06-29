@@ -110,10 +110,12 @@ export default function Registro() {
         setBusqueda={setBusqueda}
       />
 
-      <main className="register-page">
-        <form className="register-form" onSubmit={handleSubmit} style={{ maxWidth: '650px' }}>
-          <h2>Crear cuenta</h2>
-          <p className="subtitle">Registrate para comprar más rápido</p>
+      <main className="register-page" style={{ display: 'flex', justifyContent: 'center', padding: '40px 20px' }}>
+  <div className="auth-checkout-card">
+    <h2>Crear Cuenta</h2>
+    <p className="subtitle">Completa tus datos para continuar en ElectroFest</p>
+
+    <form className="register-form" onSubmit={handleSubmit}>
 
           {error && <p className="error" style={{ textAlign: 'center' }}>{error}</p>}
           {success && <p className="success" style={{ textAlign: 'center' }}>Usuario registrado correctamente</p>}
@@ -203,14 +205,15 @@ export default function Registro() {
 
           </div>
 
-          <button type="submit" disabled={loading || success} style={{ marginTop: '1.5rem' }}>
+          <button type="submit" disabled={loading || success} className="checkout-secondary-btn" style={{ width: '100%', marginTop: '20px' }}>
             {loading ? "Registrando..." : "Registrar usuario"}
           </button>
           
           <p className="subtitle" style={{ marginTop: '1.5rem', textAlign: 'center' }}>
             ¿Ya tienes cuenta? <Link to="/login" style={{ color: 'var(--primary-color, #007bff)', fontWeight: 'bold' }}>Inicia sesión</Link>
           </p>
-        </form>
+          </form>
+        </div>
       </main>
 
       <Footer />

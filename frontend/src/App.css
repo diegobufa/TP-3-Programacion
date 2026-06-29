@@ -2879,3 +2879,90 @@ img {
         grid-template-columns: 1fr;
     }
 }
+
+/* =========================================================
+   ESTILOS DE AUTH (LOGIN / REGISTRO) ESTILO CHECKOUT
+   ========================================================= */
+
+.auth-checkout-card {
+    width: 100%;
+    max-width: 550px;
+    margin: 20px auto;
+    padding: 30px;
+    border-radius: 14px;
+    border: 1px solid #dbeafe;
+    background: #eff6ff;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.auth-checkout-card h2, 
+.auth-checkout-card h3 {
+    color: #0f172a;
+    font-weight: 800;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.auth-checkout-card .subtitle {
+    color: #475569;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.auth-checkout-card .field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.auth-checkout-card .field label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #0f172a;
+    margin-bottom: 6px;
+}
+
+.auth-checkout-card .field input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 15px;
+    transition: border-color 0.2s;
+}
+
+.auth-checkout-card .field input:focus {
+    outline: none;
+    border-color: #00a8d8;
+    box-shadow: 0 0 0 3px rgba(0, 168, 216, 0.15);
+}
+
+.auth-checkout-card .password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.auth-checkout-card .toggle-password {
+    position: absolute;
+    right: 14px;
+    background: transparent;
+    border: none;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.auth-checkout-card p a {
+    color: #007fa3;
+    text-decoration: none;
+    transition: text-decoration 0.2s;
+}
+
+.auth-checkout-card p a:hover {
+    text-decoration: underline;
+}

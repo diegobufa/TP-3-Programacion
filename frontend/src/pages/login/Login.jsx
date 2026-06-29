@@ -41,16 +41,18 @@ export default function Login() {
 
   return (
     <>
-      <Header
-        textoBusqueda={textoBusqueda}
-        setTextoBusqueda={setTextoBusqueda}
-        setBusqueda={setBusqueda}
-      />
+  <Header
+    textoBusqueda={textoBusqueda}
+    setTextoBusqueda={setTextoBusqueda}
+    setBusqueda={setBusqueda}
+  />
 
-      <main className="register-page">
-        <form className="register-form" onSubmit={handleSubmit}>
-          <h2>Iniciar Sesión</h2>
-          <p className="subtitle">Ingresa a tu cuenta de ElectroFest</p>
+  <main className="register-page" style={{ display: 'flex', justifyContent: 'center', padding: '40px 20px' }}>
+    <div className="auth-checkout-card">
+      <h2>Iniciar Sesión</h2>
+      <p className="subtitle">Completa tus datos para continuar en ElectroFest</p>
+    
+      <form className="register-form" onSubmit={handleSubmit}>
 
           {error && <p className="error" style={{ textAlign: 'center', marginBottom: '1rem' }}>{error}</p>}
 
@@ -85,17 +87,18 @@ export default function Login() {
             </div>
           </div>
 
-          <button type="submit" disabled={loading}>
-            {loading ? "Ingresando..." : "Ingresar"}
+          <button type="submit" className="checkout-secondary-btn" style={{ width: '100%', marginTop: '20px' }}>
+            Ingresar
           </button>
 
           <p className="subtitle" style={{ marginTop: '1.5rem', textAlign: 'center' }}>
             ¿No tienes cuenta? <Link to="/registro" style={{ color: 'var(--primary-color, #007bff)', fontWeight: 'bold' }}>Regístrate aquí</Link>
           </p>
-        </form>
-      </main>
+      </form>
+    </div>
+  </main>
 
-      <Footer />
+  <Footer />
     </>
   );
 }
