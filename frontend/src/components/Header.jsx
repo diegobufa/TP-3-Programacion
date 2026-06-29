@@ -39,53 +39,45 @@ const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
 
   return (
     <header className="header">
-      <Link
-        to="/"
-        state={{
-          categoriaSeleccionada: "Catalogo",
-          mostrarTodos: false,
-          busqueda: "",
-        }}
-        className="logo-link"
-      >
-        <h3>ElectroFest</h3>
-      </Link>
+  {/* Logo */}
+  <Link to="/" className="logo-link">
+    <h3>ElectroFest</h3>
+  </Link>
 
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Buscar producto"
-          value={textoBusqueda}
-          onChange={(e) => setTextoBusqueda(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-
-        <button className="search-btn" onClick={buscar} type="button">
-          <FaSearch />
-        </button>
-      </div>
-
-      <div className="auth-buttons-container">
-  {!user ? (
-    <button onClick={() => navigate("/login")} className="login-btn">
-      Ingresar
+  {/* 1. Buscador (Contenedor Flexible) */}
+  <div className="search-container">
+    <input
+      type="text"
+      placeholder="Buscar producto"
+      value={textoBusqueda}
+      onChange={(e) => setTextoBusqueda(e.target.value)}
+      onKeyDown={handleKeyDown}
+    />
+    <button className="search-btn" onClick={buscar} type="button">
+      <FaSearch />
     </button>
-  ) : (
-    <>
-      {user && [2, 3].includes(user.fk_rol) && (
-        <Link to="/admin/usuarios" className="login-btn admin-panel-btn">
-        Panel Usuarios
-        </Link>
-      )}
+  </div>
 
-      <span className="user-email-display">{user.email}</span>
-
-      <button onClick={logoutUser} className="logout-btn">
-        Cerrar Sesión
+  {/* 2. Autenticación (Contenedor con prioridad de espacio fijo) */}
+  <div className="auth-buttons-container">
+    {!user ? (
+      <button onClick={() => navigate("/login")} className="login-btn">
+        Ingresar
       </button>
-    </>
-  )}
-</div>
+    ) : (
+      <>
+        {user && [2, 3].includes(user.fk_rol) && (
+          <Link to="/admin" className="login-btn admin-panel-btn">
+            ⚙️ Panel Admin
+          </Link>
+        )}
+        <span className="user-email-display">{user.email}</span>
+        <button onClick={logoutUser} className="logout-btn">
+          Cerrar Sesión
+        </button>
+      </>
+    )}
+  </div>
 
       <div className="cart-btn">
         <button

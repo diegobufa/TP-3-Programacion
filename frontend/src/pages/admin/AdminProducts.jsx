@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import AdminSidebar from "../../components/admin/AdminSidebar";
 import AdminTopbar from "../../components/admin/AdminTopbar";
 import AdminProductToolbar from "../../components/adminProducts/AdminProductToolbar";
 import ProductAdminForm from "../../components/adminProducts/ProductAdminForm";
@@ -29,7 +28,6 @@ const AdminProducts = () => {
   const formSectionRef = useRef(null);
   const [productoAEliminar, setProductoAEliminar] = useState(null);
   const [eliminando, setEliminando] = useState(false);
-  const [sidebarAbierto, setSidebarAbierto] = useState(false);
   const [soloOfertas, setSoloOfertas] = useState(false);
 
   const obtenerProductos = async () => {
@@ -295,13 +293,12 @@ const AdminProducts = () => {
   };
 
   return (
-    <div className="admin-layout">
-      <AdminSidebar abierto={sidebarAbierto} onCerrar={() => setSidebarAbierto(false)} />
+    <div className="admin-layout" style={{ display: "flex", minHeight: "100vh", width: "100%" }}>
+      
+      <main className="admin-main-container" style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
+        <AdminTopbar title="Gestión de Inventario" />
 
-      <main className="admin-main">
-        <AdminTopbar titulo="Productos" onToggleSidebar={() => setSidebarAbierto(!sidebarAbierto)} sidebarAbierto={sidebarAbierto} />
-
-        <section className="admin-content">
+        <section className="admin-content-page" style={{ padding: "24px", flex: 1 }}>
           <AdminProductToolbar
             busqueda={busqueda}
             setBusqueda={setBusqueda}
@@ -312,26 +309,30 @@ const AdminProducts = () => {
             marcasDisponibles={marcasDisponibles}
             ordenAdmin={ordenAdmin}
             setOrdenAdmin={setOrdenAdmin}
-            limpiarFiltrosAdmin={limpiarFiltrosAdmin}
+            limpiarFiltrosAdmin={() => {
+              setBusqueda("");
+              setCategoriaFiltro("Todas");
+              setMarcaFiltro("Todas");
+              setSoloOfertas(false);
+            }}
             abrirNuevoProducto={abrirNuevoProducto}
             soloOfertas={soloOfertas}
             setSoloOfertas={setSoloOfertas}
           />
 
           {mostrarFormulario && (
-            <div className="admin-form-preview" ref={formSectionRef}>
+            <div className="admin-form-preview" ref={formSectionRef} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "24px" }}>
               <ProductAdminForm
                 form={form}
                 errores={errores}
                 editandoId={editandoId}
                 loading={loading}
-                handleChange={handleChange}
-                handleImagenChange={handleImagenChange}
-                handleSubmit={handleSubmit}
+                handleChange={() => {}}
+                handleImagenChange={() => {}}
+                handleSubmit={() => {}}
                 limpiarFormulario={limpiarFormulario}
                 cerrarFormulario={cerrarFormulario}
               />
-
               <ProductPreview form={form} />
             </div>
           )}
@@ -339,11 +340,12 @@ const AdminProducts = () => {
           <ProductTable
             productosFiltrados={productosFiltrados}
             productos={productos}
-            editarProducto={editarProducto}
+            editarProducto={() => {}}
             eliminarProducto={abrirModalEliminar}
           />
         </section>
       </main>
+
       <ConfirmDeleteModal
         producto={productoAEliminar}
         cerrarModal={cerrarModalEliminar}

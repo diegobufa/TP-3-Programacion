@@ -3050,3 +3050,95 @@ img {
     margin-bottom: 4px;
   }
 }
+/* =========================================================
+   03. HEADER PRINCIPAL - DISTRIBUCIÓN INTELIGENTE
+   ========================================================= */
+
+
+.logo-link {
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   BARRA DE BÚSQUEDA FLUIDA Y ADAPTABLE
+   ========================================================= */
+.search-container {
+  display: flex;
+  align-items: center;
+  flex: 1;               /* ¡Clave! Ocupa TODO el espacio libre del medio */
+  max-width: 600px;      /* Evita que se vuelva gigante en pantallas ultra anchas */
+  min-width: 180px;      /* Espacio mínimo para que no desaparezca */
+  height: 44px;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 2px;
+  border: 1px solid #cbd5e1;
+}
+
+.search-container input {
+  flex: 1;               /* El input ocupa todo el interior de la barra */
+  border: none;
+  background: transparent;
+  padding: 0 14px;
+  font-size: 15px;
+  color: #1f2933;
+  outline: none;
+  width: 100%;
+}
+
+.search-btn {
+  height: 100%;
+  padding: 0 16px;
+  background: #1f2933;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+/* =========================================================
+   CONTENEDOR DE AUTENTICACIÓN (Prioridad de espacio estricta)
+   ========================================================= */
+.auth-buttons-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;        /* ¡Clave! Le dice al navegador: Prohibido achicar este bloque */
+  white-space: nowrap;   /* Evita que los textos del botón salten a dos líneas */
+}
+
+/* El email del usuario reduce sutilmente si la pantalla es mediana */
+.user-email-display {
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: 600;
+  max-width: 150px;       /* Si el correo es muy largo, se frena aquí */
+  overflow: hidden;
+  text-overflow: ellipsis;/* Agrega tres puntos (...) si el correo no entra */
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN (Pantallas medianas y móviles)
+   ========================================================= */
+
+/* Cuando ya no hay espacio físico horizontal para coexistir */
+@media (max-width: 992px) {
+  .header {
+    flex-direction: column; /* Apilamos verticalmente */
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .search-container {
+    width: 100%;          /* En móviles toma el 100% de la pantalla */
+    max-width: 100%;
+    order: 2;             /* Se acomoda debajo del logo */
+  }
+
+  .auth-buttons-container {
+    width: 100%;
+    justify-content: center;
+    order: 3;
+    gap: 8px;
+  }
+}
