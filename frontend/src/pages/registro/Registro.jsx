@@ -33,47 +33,54 @@ export default function Registro() {
       setError(err.message);
     }
   };
+  
+  const sectionTitleStyle = { margin: '1.5rem 0 1rem 0', fontSize: '1rem', fontWeight: '600', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color, #dee2e6)', paddingBottom: '0.4rem' };
+  const gridStyle = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' };
 
   return (
-    <div style={{ maxWidth: '500px', margin: '30px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
+    <div className="admin-layout" style={{ justifyContent: 'center', alignItems: 'center', minHeight: '90vh', padding: '2rem' }}>
+      <div className="admin-card" style={{ width: '100%', maxWidth: '650px', padding: '2.5rem' }}>
+        <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.9rem', display: 'inline-block', marginBottom: '1rem' }}>← Volver al Inicio</Link>
+        <h2 style={{ fontSize: '1.8rem', fontWeight: '700', marginBottom: '0.25rem' }}>Crear Cuenta</h2>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>Únete a la plataforma de ElectroFest</p>
 
-      <div style={{ marginBottom: '15px' }}>
-        <Link to="/" style={{ color: '#007bff', textDecoration: 'none', fontSize: '14px' }}>
-          ← Volver al Inicio
-        </Link>
+        {error && <div style={{ padding: '0.8rem', backgroundColor: '#f8d7da', color: '#721c24', borderRadius: 'var(--border-radius)', marginBottom: '1.5rem', fontSize: '0.9rem' }}>{error}</div>}
+
+        <form onSubmit={handleSubmit}>
+          <h4 style={sectionTitleStyle}>Datos Personales</h4>
+          <div style={gridStyle}>
+            <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} required className="form-control" />
+            <input type="text" name="apellido" placeholder="Apellido" onChange={handleChange} required className="form-control" />
+            <input type="text" name="usuario" placeholder="Nombre de Usuario" onChange={handleChange} required className="form-control" />
+            <input type="text" name="telefono" placeholder="Teléfono" onChange={handleChange} className="form-control" />
+          </div>
+
+          <div style={{ marginBottom: '1rem' }}>
+            <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleChange} required className="form-control" style={{ width: '100%' }} />
+          </div>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <input type="password" name="password" placeholder="Contraseña (mín. 6 caracteres)" onChange={handleChange} required className="form-control" style={{ width: '100%' }} />
+          </div>
+
+          <h4 style={sectionTitleStyle}>Dirección de Envío</h4>
+          <div style={gridStyle}>
+            <input type="text" name="provincia" placeholder="Provincia" onChange={handleChange} className="form-control" />
+            <input type="text" name="localidad" placeholder="Localidad" onChange={handleChange} className="form-control" />
+            <input type="text" name="calle" placeholder="Calle" onChange={handleChange} className="form-control" />
+            <input type="text" name="altura" placeholder="Altura" onChange={handleChange} className="form-control" />
+            <input type="text" name="piso" placeholder="Piso" onChange={handleChange} className="form-control" />
+            <input type="text" name="departamento" placeholder="Dpto" onChange={handleChange} className="form-control" />
+          </div>
+
+          <button type="submit" className="btn btn-success" style={{ width: '100%', padding: '0.8rem', fontWeight: '600', marginTop: '1.5rem', backgroundColor: '#28a745', borderColor: '#28a745', color: '#fff' }}>
+            Registrarse
+          </button>
+        </form>
+
+        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+          ¿Ya tienes cuenta? <Link to="/login" style={{ color: 'var(--primary-color, #007bff)', fontWeight: '600', textDecoration: 'none' }}>Inicia sesión</Link>
+        </div>
       </div>
-
-      <h2>Registro de Usuario</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      <form onSubmit={handleSubmit}>
-        <h3>Datos Personales</h3>
-        <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} required style={{ width: '45%', marginRight: '5%', marginBottom: '10px', padding: '8px' }} />
-        <input type="text" name="apellido" placeholder="Apellido" onChange={handleChange} required style={{ width: '45%', marginBottom: '10px', padding: '8px' }} />
-        <input type="text" name="usuario" placeholder="Nombre de Usuario" onChange={handleChange} required style={{ width: '45%', marginRight: '5%', marginBottom: '10px', padding: '8px' }} />
-        <input type="text" name="telefono" placeholder="Teléfono" onChange={handleChange} style={{ width: '45%', marginBottom: '10px', padding: '8px' }} />
-        
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} required style={{ width: '95%', marginBottom: '10px', padding: '8px' }} />
-        <input type="password" name="password" placeholder="Contraseña (mín. 6 caracteres)" onChange={handleChange} required style={{ width: '95%', marginBottom: '20px', padding: '8px' }} />
-
-        <h3>Dirección</h3>
-        <input type="text" name="provincia" placeholder="Provincia" onChange={handleChange} style={{ width: '45%', marginRight: '5%', marginBottom: '10px', padding: '8px' }} />
-        <input type="text" name="localidad" placeholder="Localidad" onChange={handleChange} style={{ width: '45%', marginBottom: '10px', padding: '8px' }} />
-        <input type="text" name="calle" placeholder="Calle" onChange={handleChange} style={{ width: '45%', marginRight: '5%', marginBottom: '10px', padding: '8px' }} />
-        <input type="text" name="altura" placeholder="Altura" onChange={handleChange} style={{ width: '45%', marginBottom: '10px', padding: '8px' }} />
-        <input type="text" name="piso" placeholder="Piso" onChange={handleChange} style={{ width: '45%', marginRight: '5%', marginBottom: '10px', padding: '8px' }} />
-        <input type="text" name="departamento" placeholder="Dpto" onChange={handleChange} style={{ width: '45%', marginBottom: '10px', padding: '8px' }} />
-
-        <button type="submit" style={{ width: '100%', padding: '10px', background: '#28a745', color: 'white', border: 'none', cursor: 'pointer', marginTop: '15px' }}>Registrarse</button>
-      </form>
-
-      <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '14px' }}>
-        <span>¿Ya tienes una cuenta? </span>
-        <Link to="/login" style={{ color: '#007bff', fontWeight: 'bold', textDecoration: 'none' }}>
-          Inicia Sesión aquí
-        </Link>
-      </div>
-      
     </div>
   );
 }

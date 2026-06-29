@@ -73,11 +73,11 @@ const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
           </button>
         ) : (
           <>
-            {user.fk_rol === 2 || 3 &&  (
-              <Link to="/admin/usuarios" style={{ color: "#007bff", textDecoration: "none", fontWeight: "bold" }}>
-                ⚙️ Panel Usuarios
-              </Link>
-            )}
+        {user && [2, 3].includes(user.fk_rol) && (
+          <Link to="/admin/usuarios" style={{ color: "#007bff", textDecoration: "none", fontWeight: "bold" }}>
+            ⚙️ Panel Usuarios
+          </Link>
+        )}
 
             <span style={{ fontSize: "14px", color: "#555" }}>{user.email}</span>
 
