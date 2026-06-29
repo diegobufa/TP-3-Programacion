@@ -1,86 +1,219 @@
 import { useState } from 'react';
 import { authService } from '../../services/authServices';
 import { useNavigate, Link } from 'react-router-dom';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 export default function Registro() {
   const navigate = useNavigate();
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errores, setErrores] = useState({});
+
+  const [textoBusqueda, setTextoBusqueda] = useState("");
+  const [, setBusqueda] = useState("");
+
   const [formData, setFormData] = useState({
     nombre: '', apellido: '', usuario: '', telefono: '', email: '', password: '',
     provincia: '', localidad: '', calle: '', altura: '', piso: '', departamento: '',
     fk_rol: 1
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const validarCampo = (name, value) => {
+    switch (name) {
+      case "nombre":
+      case "apellido":
+        if (!value.trim()) return "Este campo es obligatorio.";
+        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value)) {
+          return "Solo se permiten letras.";
+        }
+        return "";
+      case "usuario":
+        if (!value.trim()) return "El usuario es obligatorio.";
+        if (value.length < 4) return "Debe tener al menos 4 caracteres.";
+        return "";
+      case "email":
+        if (!value.trim()) return "El email es obligatorio.";
+        if (!/\S+@\S+\.\S+/.test(value)) return "Email inválido.";
+        return "";
+      case "password":
+        if (!value.trim()) return "La contraseña es obligatoria.";
+        if (value.length < 8) return "Debe tener mínimo 8 caracteres.";
+        if (!/(?=.*[A-Z])(?=.*\d)/.test(value)) {
+          return "Debe contener al menos una mayúscula y un número.";
+        }
+        return "";
+      default:
+        return "";
+    }
+  };
+
+ const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    
+    if (["nombre", "apellido", "usuario", "email", "password"].includes(name)) {
+      setErrores((prev) => ({
+        ...prev,
+        [name]: validarCampo(name, value),
+      }));
+    }
+  };
+
+  const validarFormulario = () => {
+    const nuevosErrores = {};
+    const camposPrincipales = ["nombre", "apellido", "usuario", "email", "password"];
+
+    camposPrincipales.forEach((campo) => {
+      const err = validarCampo(campo, formData[campo]);
+      if (err) nuevosErrores[campo] = err;
+    });
+
+    setErrores(nuevosErrores);
+    return Object.keys(nuevosErrores).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (!formData.nombre || !formData.apellido || !formData.usuario || !formData.email || !formData.password) {
-      return setError('Los campos principales son obligatorios.');
-    }
-    if (!/\S+@\S+\.\S+/.test(formData.email)) return setError('Email inválido.');
-    if (formData.password.length < 6) return setError('La contraseña debe tener al menos 6 caracteres.');
+    if (!validarFormulario()) return;
 
+    setLoading(true);
     try {
       await authService.registro(formData);
+      setSuccess(true);
       alert('¡Usuario registrado correctamente!');
-      navigate('/login');
+      setTimeout(() => {
+        setSuccess(false);
+        navigate('/login');
+      }, 1500);
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
-  
-  const sectionTitleStyle = { margin: '1.5rem 0 1rem 0', fontSize: '1rem', fontWeight: '600', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color, #dee2e6)', paddingBottom: '0.4rem' };
-  const gridStyle = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' };
+
+  const sectionDividerStyle = { gridColumn: '1 / -1', margin: '1rem 0 0.5rem', fontSize: '1.1rem', color: '#333', borderBottom: '1px solid #ddd', paddingBottom: '5px' };
 
   return (
-    <div className="admin-layout" style={{ justifyContent: 'center', alignItems: 'center', minHeight: '90vh', padding: '2rem' }}>
-      <div className="admin-card" style={{ width: '100%', maxWidth: '650px', padding: '2.5rem' }}>
-        <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.9rem', display: 'inline-block', marginBottom: '1rem' }}>← Volver al Inicio</Link>
-        <h2 style={{ fontSize: '1.8rem', fontWeight: '700', marginBottom: '0.25rem' }}>Crear Cuenta</h2>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>Únete a la plataforma de ElectroFest</p>
+    <>
+      <Header
+        textoBusqueda={textoBusqueda}
+        setTextoBusqueda={setTextoBusqueda}
+        setBusqueda={setBusqueda}
+      />
 
-        {error && <div style={{ padding: '0.8rem', backgroundColor: '#f8d7da', color: '#721c24', borderRadius: 'var(--border-radius)', marginBottom: '1.5rem', fontSize: '0.9rem' }}>{error}</div>}
+      <main className="register-page">
+        <form className="register-form" onSubmit={handleSubmit} style={{ maxWidth: '650px' }}>
+          <h2>Crear cuenta</h2>
+          <p className="subtitle">Registrate para comprar más rápido</p>
 
-        <form onSubmit={handleSubmit}>
-          <h4 style={sectionTitleStyle}>Datos Personales</h4>
-          <div style={gridStyle}>
-            <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} required className="form-control" />
-            <input type="text" name="apellido" placeholder="Apellido" onChange={handleChange} required className="form-control" />
-            <input type="text" name="usuario" placeholder="Nombre de Usuario" onChange={handleChange} required className="form-control" />
-            <input type="text" name="telefono" placeholder="Teléfono" onChange={handleChange} className="form-control" />
+          {error && <p className="error" style={{ textAlign: 'center' }}>{error}</p>}
+          {success && <p className="success" style={{ textAlign: 'center' }}>Usuario registrado correctamente</p>}
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 15px', width: '100%' }}>
+            
+            <h3 style={sectionDividerStyle}>Datos Personales</h3>
+            
+            <div className="field">
+              <label>Nombre</label>
+              <input type="text" name="nombre" placeholder="Nombre" value={formData.nombre} onChange={handleChange} required />
+              {errores.nombre && <p className="error">{errores.nombre}</p>}
+            </div>
+
+            <div className="field">
+              <label>Apellido</label>
+              <input type="text" name="apellido" placeholder="Apellido" value={formData.apellido} onChange={handleChange} required />
+              {errores.apellido && <p className="error">{errores.apellido}</p>}
+            </div>
+
+            <div className="field">
+              <label>Usuario</label>
+              <input type="text" name="usuario" placeholder="Usuario" value={formData.usuario} onChange={handleChange} required />
+              {errores.usuario && <p className="error">{errores.usuario}</p>}
+            </div>
+
+            <div className="field">
+              <label>Teléfono</label>
+              <input type="text" name="telefono" placeholder="Teléfono" value={formData.telefono} onChange={handleChange} />
+            </div>
+
+            <div className="field" style={{ gridColumn: '1 / -1' }}>
+              <label>Email</label>
+              <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
+              {errores.email && <p className="error">{errores.email}</p>}
+            </div>
+
+            <div className="field" style={{ gridColumn: '1 / -1' }}>
+              <label>Password</label>
+              <div className="password-container">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Contraseña"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+                <button type="button" className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? "Ocultar" : "Mostrar"}
+                </button>
+              </div>
+              {errores.password && <p className="error">{errores.password}</p>}
+            </div>
+
+            <h3 style={sectionDividerStyle}>Dirección de Envío</h3>
+
+            <div className="field">
+              <label>Provincia</label>
+              <input type="text" name="provincia" placeholder="Provincia" value={formData.provincia} onChange={handleChange} />
+            </div>
+
+            <div className="field">
+              <label>Localidad</label>
+              <input type="text" name="localidad" placeholder="Localidad" value={formData.localidad} onChange={handleChange} />
+            </div>
+
+            <div className="field">
+              <label>Calle</label>
+              <input type="text" name="calle" placeholder="Calle" value={formData.calle} onChange={handleChange} />
+            </div>
+
+            <div className="field">
+              <label>Altura</label>
+              <input type="text" name="altura" placeholder="Altura" value={formData.altura} onChange={handleChange} />
+            </div>
+
+            <div className="field">
+              <label>Piso</label>
+              <input type="text" name="piso" placeholder="Piso" value={formData.piso} onChange={handleChange} />
+            </div>
+
+            <div className="field">
+              <label>Departamento</label>
+              <input type="text" name="departamento" placeholder="Dpto" value={formData.departamento} onChange={handleChange} />
+            </div>
+
           </div>
 
-          <div style={{ marginBottom: '1rem' }}>
-            <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleChange} required className="form-control" style={{ width: '100%' }} />
-          </div>
-          <div style={{ marginBottom: '1.5rem' }}>
-            <input type="password" name="password" placeholder="Contraseña (mín. 6 caracteres)" onChange={handleChange} required className="form-control" style={{ width: '100%' }} />
-          </div>
-
-          <h4 style={sectionTitleStyle}>Dirección de Envío</h4>
-          <div style={gridStyle}>
-            <input type="text" name="provincia" placeholder="Provincia" onChange={handleChange} className="form-control" />
-            <input type="text" name="localidad" placeholder="Localidad" onChange={handleChange} className="form-control" />
-            <input type="text" name="calle" placeholder="Calle" onChange={handleChange} className="form-control" />
-            <input type="text" name="altura" placeholder="Altura" onChange={handleChange} className="form-control" />
-            <input type="text" name="piso" placeholder="Piso" onChange={handleChange} className="form-control" />
-            <input type="text" name="departamento" placeholder="Dpto" onChange={handleChange} className="form-control" />
-          </div>
-
-          <button type="submit" className="btn btn-success" style={{ width: '100%', padding: '0.8rem', fontWeight: '600', marginTop: '1.5rem', backgroundColor: '#28a745', borderColor: '#28a745', color: '#fff' }}>
-            Registrarse
+          <button type="submit" disabled={loading || success} style={{ marginTop: '1.5rem' }}>
+            {loading ? "Registrando..." : "Registrar usuario"}
           </button>
+          
+          <p className="subtitle" style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+            ¿Ya tienes cuenta? <Link to="/login" style={{ color: 'var(--primary-color, #007bff)', fontWeight: 'bold' }}>Inicia sesión</Link>
+          </p>
         </form>
+      </main>
 
-        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-          ¿Ya tienes cuenta? <Link to="/login" style={{ color: 'var(--primary-color, #007bff)', fontWeight: '600', textDecoration: 'none' }}>Inicia sesión</Link>
-        </div>
-      </div>
-    </div>
+      <Footer />
+    </>
   );
 }

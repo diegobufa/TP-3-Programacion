@@ -73,13 +73,21 @@ const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
           </button>
         ) : (
           <>
-        {user && [2, 3].includes(user.fk_rol) && (
-          <Link to="/admin/usuarios" style={{ color: "#007bff", textDecoration: "none", fontWeight: "bold" }}>
-            ⚙️ Panel Usuarios
-          </Link>
-        )}
+            {user && [2, 3].includes(user.fk_rol) && (
+              <Link 
+                to="/admin/usuarios" 
+                className="login-btn" 
+                style={{ 
+                  textDecoration: "none", 
+                  display: "inline-flex", 
+                  alignItems: "center" 
+                }}
+              >
+                ⚙️ Panel Usuarios
+              </Link>
+            )}
 
-            <span style={{ fontSize: "14px", color: "#555" }}>{user.email}</span>
+            <span style={{ fontSize: "14px", color: "#ffffff", fontWeight: "500" }}>{user.email}</span>
 
             <button onClick={logoutUser} className="logout-btn">
               Cerrar Sesión
