@@ -1,6 +1,9 @@
 import { Usuario } from "../../models/Usuario.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { Op } from "sequelize";
+
+const secretKey = "programacion3-2026";
 
 const buildUserData = (user) => ({
   id: user.id,
@@ -18,80 +21,115 @@ const buildUserData = (user) => ({
   departamento: user.departamento,
 });
 
+const limpiarTexto = (valor) => (typeof valor === "string" ? valor.trim() : valor);
+
 export const registerUser = async (req, res) => {
-  const {
-    nombre,
-    apellido,
-    usuario,
-    telefono,
-    email,
-    password,
-    provincia,
-    localidad,
-    calle,
-    altura,
-    piso,
-    departamento,
-    fk_rol,
-  } = req.body;
+  try {
+    const nombre = limpiarTexto(req.body.nombre);
+    const apellido = limpiarTexto(req.body.apellido);
+    const usuario = limpiarTexto(req.body.usuario);
+    const telefono = limpiarTexto(req.body.telefono);
+    const email = limpiarTexto(req.body.email)?.toLowerCase();
+    const password = req.body.password;
+    const provincia = limpiarTexto(req.body.provincia);
+    const localidad = limpiarTexto(req.body.localidad);
+    const calle = limpiarTexto(req.body.calle);
+    const altura = limpiarTexto(req.body.altura);
+    const piso = limpiarTexto(req.body.piso);
+    const departamento = limpiarTexto(req.body.departamento);
 
-  const user = await Usuario.findOne({ where: { email } });
-  if (user) return res.status(400).send({ message: "Usuario existente" });
+    if (!nombre || !apellido || !usuario || !email || !password) {
+      return res.status(400).json({
+        message: "Nombre, apellido, usuario, email y contraseña son obligatorios",
+      });
+    }
 
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  
-  const newUser = await Usuario.create({
-    nombre,
-    apellido,
-    usuario,
-    telefono,
-    email,
-    password: hashedPassword,
-    provincia,
-    localidad,
-    calle,
-    altura,
-    piso,
-    departamento,
-    fk_rol: fk_rol || 1,
-  });
+    const existingUser = await Usuario.findOne({
+      where: {
+        [Op.or]: [{ email }, { usuario }],
+      },
+    });
 
-  res.status(201).json(buildUserData(newUser));
+    if (existingUser) {
+      const campoDuplicado = existingUser.email === email ? "email" : "usuario";
+      return res.status(400).json({
+        message: `Ya existe un usuario registrado con ese ${campoDuplicado}`,
+      });
+    }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const newUser = await Usuario.create({
+      nombre,
+      apellido,
+      usuario,
+      telefono,
+      email,
+      password: hashedPassword,
+      provincia,
+      localidad,
+      calle,
+      altura,
+      piso,
+      departamento,
+      fk_rol: 1,
+    });
+
+    return res.status(201).json(buildUserData(newUser));
+  } catch (error) {
+    console.log("Error al registrar usuario:", error);
+    return res.status(500).json({ message: "No se pudo registrar el usuario" });
+  }
 };
 
 export const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const email = limpiarTexto(req.body.email)?.toLowerCase();
+    const password = req.body.password;
 
-  const user = await Usuario.findOne({ where: { email } });
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email y contraseña son obligatorios" });
+    }
 
-  if (!user) return res.status(400).send({ message: "Usuario no existente" });
+    const user = await Usuario.findOne({ where: { email } });
 
-  const comparison = await bcrypt.compare(password, user.password);
+    if (!user) {
+      return res.status(400).json({ message: "Usuario no existente" });
+    }
 
-  if (!comparison) {
-    return res.status(401).send({ message: "Email y/o contraseña incorrecta" });
+    const comparison = await bcrypt.compare(password, user.password);
+
+    if (!comparison) {
+      return res.status(401).json({ message: "Email y/o contraseña incorrecta" });
+    }
+
+    const token = jwt.sign(buildUserData(user), secretKey, { expiresIn: "1h" });
+
+    return res.json(token);
+  } catch (error) {
+    console.log("Error al iniciar sesión:", error);
+    return res.status(500).json({ message: "No se pudo iniciar sesión" });
   }
-
-  const secretKey = "programacion3-2026";
-
-  const token = jwt.sign(buildUserData(user), secretKey, { expiresIn: "1h" });
-
-  return res.json(token);
 };
 
 export const getUserById = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  const user = await Usuario.findByPk(id, {
-    attributes: {
-      exclude: ["password"],
-    },
-  });
+    const user = await Usuario.findByPk(id, {
+      attributes: {
+        exclude: ["password"],
+      },
+    });
 
-  if (!user) {
-    return res.status(404).json({ message: "Usuario no encontrado" });
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    return res.json(user);
+  } catch (error) {
+    console.log("Error al obtener usuario:", error);
+    return res.status(500).json({ message: "No se pudo obtener el usuario" });
   }
-
-  return res.json(user);
 };

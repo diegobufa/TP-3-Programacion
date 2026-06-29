@@ -42,16 +42,25 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (location.state) {
+      const nuevaCategoria = location.state.categoriaSeleccionada || "Catalogo";
+      const nuevoMostrarTodos = Boolean(location.state.mostrarTodos);
+      const nuevaBusqueda = location.state.busqueda || "";
+
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setCategoriaSeleccionada(
-        location.state.categoriaSeleccionada || "Catalogo",
-      );
+      setCategoriaSeleccionada(nuevaCategoria);
+      setMostrarTodos(nuevoMostrarTodos);
+      setBusqueda(nuevaBusqueda);
 
-      setMostrarTodos(location.state.mostrarTodos || false);
-
-      setBusqueda(location.state.busqueda || "");
+      if (nuevaCategoria === "Catalogo" && !nuevoMostrarTodos && nuevaBusqueda === "") {
+        setCategoriaFiltroCatalogo("Todas");
+        setMarcaSeleccionada("Todas");
+        setPrecioMinimo("");
+        setPrecioMaximo("");
+        setSoloOferta(false);
+        setOrdenarPor("relevancia");
+      }
     }
-  }, [location.state]);
+  }, [location.state, location.key]);
 
   const mostrarFiltrosCatalogo = mostrarTodos;
 
@@ -165,6 +174,8 @@ const Dashboard = () => {
         textoBusqueda={textoBusqueda}
         setTextoBusqueda={setTextoBusqueda}
         setBusqueda={setBusqueda}
+        setCategoriaSeleccionada={setCategoriaSeleccionada}
+        setMostrarTodos={setMostrarTodos}
       />
 
       <CategoriesNav

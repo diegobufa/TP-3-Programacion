@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { authService } from '../../services/authServices';
 import { useNavigate, Link } from 'react-router-dom';
 import Header from '../../components/Header';
 import { toast } from 'react-toastify';
 import Footer from '../../components/Footer';
+import { AuthContext } from '../../context/authContext';
 
 export default function Registro() {
   const navigate = useNavigate();
+  const { loginUser } = useContext(AuthContext);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -88,12 +90,19 @@ export default function Registro() {
     setLoading(true);
     try {
       await authService.registro(formData);
+      const token = await authService.login(formData.email, formData.password);
+      loginUser(token);
       setSuccess(true);
       toast.success('Usuario registrado correctamente');
+      setFormData({
+        nombre: '', apellido: '', usuario: '', telefono: '', email: '', password: '',
+        provincia: '', localidad: '', calle: '', altura: '', piso: '', departamento: '',
+        fk_rol: 1
+      });
       setTimeout(() => {
         setSuccess(false);
-        navigate('/login');
-      }, 1500);
+        navigate('/');
+      }, 1200);
     } catch (err) {
       setError(err.message);
       toast.error(err.message || 'No se pudo registrar el usuario');
