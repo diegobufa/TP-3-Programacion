@@ -16,13 +16,22 @@ export default function AdminUsuarios() {
   }, [user]);
 
   const cargarUsuarios = async () => {
-    try {
-      const data = await authService.getUsuarios(user.token);
-      setUsuarios(data);
-    } catch (err) { 
-      setError('Error de permisos o conexión al servidor.'); 
+  try {
+    console.log("Datos del usuario actual en el contexto:", user);
+    console.log("Token enviado:", user?.token);
+
+    if (!user?.token) {
+      setError("No se detectó un token válido en la sesión.");
+      return;
     }
-  };
+
+    const data = await authService.getUsuarios(user.token);
+    setUsuarios(data);
+  } catch (err) { 
+    console.error("Error detallado de la petición:", err);
+    setError(`Error: ${err.message || 'Error de permisos o conexión al servidor.'}`); 
+  }
+};
 
   const handleCambiarRol = async (id, nuevoRolId) => {
     try {
@@ -65,7 +74,7 @@ return (
       </div>
     )}
 
-    {/* Contenedor principal con scroll vertical y horizontal controlado */}
+
     <div style={{ overflowX: 'auto', maxHeight: '500px', overflowY: 'auto' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '15px' }}>
         <thead>
@@ -74,7 +83,6 @@ return (
             <th style={{ padding: '12px 8px' }}>Usuario</th>
             <th style={{ padding: '12px 8px' }}>Email</th>
             <th style={{ padding: '12px 8px' }}>Rol Actual</th>
-            {/* Corregido: textRight no existe en CSS, se usa textAlign */}
             <th style={{ padding: '12px 8px', textAlign: 'right' }}>Acciones Jerárquicas</th>
           </tr>
         </thead>
