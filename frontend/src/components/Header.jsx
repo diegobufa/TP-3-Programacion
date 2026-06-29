@@ -1,10 +1,16 @@
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext.jsx";
 import { useContext } from "react";
 import { AuthContext } from "../context/authContext";
 
-const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
+const Header = ({
+  textoBusqueda,
+  setTextoBusqueda,
+  setBusqueda,
+  setCategoriaSeleccionada,
+  setMostrarTodos,
+}) => {
   const navigate = useNavigate();
   const { openCart, cart } = useCart();
   const { user, logoutUser } = useContext(AuthContext);
@@ -14,32 +20,61 @@ const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
     0,
   );
 
+  const estadoHome = {
+    categoriaSeleccionada: "Catalogo",
+    mostrarTodos: false,
+    busqueda: "",
+  };
+
+  const volverAlInicio = () => {
+    if (typeof setBusqueda === "function") setBusqueda("");
+    if (typeof setTextoBusqueda === "function") setTextoBusqueda("");
+    if (typeof setCategoriaSeleccionada === "function") {
+      setCategoriaSeleccionada("Catalogo");
+    }
+    if (typeof setMostrarTodos === "function") setMostrarTodos(false);
+
+    navigate("/", {
+      state: {
+        ...estadoHome,
+        resetHomeAt: Date.now(),
+      },
+    });
+  };
+
   const buscar = () => {
     const busquedaLimpia = textoBusqueda.trim();
 
-    setBusqueda(busquedaLimpia);
+    if (typeof setBusqueda === "function") setBusqueda(busquedaLimpia);
     navigate("/", {
       state: {
         busqueda: busquedaLimpia,
         mostrarTodos: true,
         categoriaSeleccionada: "Catalogo",
+        resetHomeAt: Date.now(),
       },
     });
 
-    setTextoBusqueda("");
+    if (typeof setTextoBusqueda === "function") setTextoBusqueda("");
   };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
+      e.preventDefault();
       buscar();
     }
   };
 
   return (
     <header className="header">
-      <Link to="/" className="logo-link" aria-label="Ir al inicio">
+      <button
+        type="button"
+        className="logo-link logo-button"
+        aria-label="Ir al inicio"
+        onClick={volverAlInicio}
+      >
         <h3>ElectroFest</h3>
-      </Link>
+      </button>
 
       <div className="search-container">
         <input
@@ -62,9 +97,13 @@ const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
         ) : (
           <>
             {[2, 3].includes(Number(user.fk_rol)) && (
-              <Link to="/admin" className="login-btn admin-panel-btn">
+              <button
+                type="button"
+                onClick={() => navigate("/admin")}
+                className="login-btn admin-panel-btn"
+              >
                 ⚙️ Panel Admin
-              </Link>
+              </button>
             )}
             <span className="user-email-display" title={user.email}>
               {user.email}

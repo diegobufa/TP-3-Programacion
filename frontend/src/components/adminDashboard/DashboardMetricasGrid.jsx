@@ -95,7 +95,7 @@ const MetricasGrid = ({ pedidos = [], productos = [], usuarios = 0 }) => {
       icon: <FaTimesCircle />,
     },
     {
-      label: "Usuarios",
+      label: "Usuarios totales",
       value: usuarios,
       color: "#7c3aed",
       icon: <FaUsers />,

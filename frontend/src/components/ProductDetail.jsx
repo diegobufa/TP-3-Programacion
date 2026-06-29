@@ -103,6 +103,8 @@ const ProductDetail = () => {
         textoBusqueda={textoBusqueda}
         setTextoBusqueda={setTextoBusqueda}
         setBusqueda={setBusqueda}
+        setCategoriaSeleccionada={setCategoriaSeleccionada}
+        setMostrarTodos={setMostrarTodos}
       />
 
       <CategoriesNav

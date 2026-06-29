@@ -3510,3 +3510,24 @@ img {
     padding: 16px;
   }
 }
+
+/* Corrección final: el logo ElectroFest es un botón para poder resetear el home */
+.header .logo-button,
+.header > .logo-button {
+  width: auto;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-shadow: none;
+}
+
+.header .logo-button:hover {
+  background: transparent;
+}
