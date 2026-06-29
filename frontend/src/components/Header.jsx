@@ -73,7 +73,7 @@ const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
           </button>
         ) : (
           <>
-            {user.fk_rol === 3 && (
+            {user.fk_rol === 2 || 3 &&  (
               <Link to="/admin/usuarios" style={{ color: "#007bff", textDecoration: "none", fontWeight: "bold" }}>
                 ⚙️ Panel Usuarios
               </Link>
