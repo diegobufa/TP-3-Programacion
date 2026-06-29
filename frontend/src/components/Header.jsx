@@ -65,36 +65,27 @@ const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
         </button>
       </div>
 
-      <div className="auth-buttons-container" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-        
-        {!user ? (
-          <button onClick={() => navigate("/login")} className="login-btn">
-            Ingresar
-          </button>
-        ) : (
-          <>
-            {user && [2, 3].includes(user.fk_rol) && (
-              <Link 
-                to="/admin/usuarios" 
-                className="login-btn" 
-                style={{ 
-                  textDecoration: "none", 
-                  display: "inline-flex", 
-                  alignItems: "center" 
-                }}
-              >
-                ⚙️ Panel Usuarios
-              </Link>
-            )}
+      <div className="auth-buttons-container">
+  {!user ? (
+    <button onClick={() => navigate("/login")} className="login-btn">
+      Ingresar
+    </button>
+  ) : (
+    <>
+      {user && [2, 3].includes(user.fk_rol) && (
+        <Link to="/admin/usuarios" className="login-btn admin-panel-btn">
+        Panel Usuarios
+        </Link>
+      )}
 
-            <span style={{ fontSize: "14px", color: "#ffffff", fontWeight: "500" }}>{user.email}</span>
+      <span className="user-email-display">{user.email}</span>
 
-            <button onClick={logoutUser} className="logout-btn">
-              Cerrar Sesión
-            </button>
-          </>
-        )}
-      </div>
+      <button onClick={logoutUser} className="logout-btn">
+        Cerrar Sesión
+      </button>
+    </>
+  )}
+</div>
 
       <div className="cart-btn">
         <button
