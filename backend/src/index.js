@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import authRoutes from "../routes/auth.routes.js";
 import productRoutes from "../routes/product.routes.js";
 import orderRoutes from "../routes/order.routes.js";
+import rolRoutes from "../routes/rol.routes.js";
 
 import { Rol } from "../models/Rol.js";
 import { Usuario } from "../models/Usuario.js";
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use(productRoutes);
 app.use(orderRoutes);
+app.use(rolRoutes);
 
 const passwordAdmin = await bcrypt.hash("admin123", 10);
 

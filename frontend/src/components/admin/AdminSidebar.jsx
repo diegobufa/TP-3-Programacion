@@ -10,9 +10,8 @@ import { AuthContext } from "../../context/authContext";
 
 const getLinkClass = ({ isActive }) =>  "admin-menu-link" + (isActive ? " active" : "")
 
-const { user } = useContext(AuthContext);
-
 const AdminSidebar = ({ abierto, onCerrar }) => {
+  const { user } = useContext(AuthContext);
   return (
   <>
     {abierto && (
