@@ -1,11 +1,16 @@
 import {
   FaBoxOpen,
   FaClipboardList,
-  FaTags
+  FaTags,
+  FaUsers
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../context/authContext";
 
 const getLinkClass = ({ isActive }) =>  "admin-menu-link" + (isActive ? " active" : "")
+
+const { user } = useContext(AuthContext);
 
 const AdminSidebar = ({ abierto, onCerrar }) => {
   return (
@@ -44,11 +49,16 @@ const AdminSidebar = ({ abierto, onCerrar }) => {
           <FaClipboardList /> Pedidos
         </NavLink>
 
+        {user && (user.fk_rol === 2 || user.fk_rol === 3) && (
+          <NavLink
+            to="/admin/usuarios"
+            className={getLinkClass}
+            onClick={onCerrar}
+          >
+            <FaUsers /> Usuarios y Roles
+          </NavLink>
+        )}
         {/*
-        <NavLink to="/admin/clientes" className={getLinkClass} onClick={onCerrar} >
-          <FaUsers /> Clientes
-        </NavLink>
-
         <NavLink to="/admin/config" className={getLinkClass} onClick={onCerrar} >
           <FaCog /> Configuración
         </NavLink>

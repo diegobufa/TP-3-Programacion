@@ -46,14 +46,14 @@ function App() {
               <Route path="/registro" element={<Registro />} />
 
               <Route element={<ProtectedRoute allowedRoles={[2, 3]} />}>
-                <Route path="/admin/productos" element={<AdminProducts />} />
-                
                 <Route path="/admin" element={<AdminLayout />}>
                   <Route index element={<Navigate to="dashboard" replace />} />
                   <Route path="dashboard" element={<AdminDashboard />} />
                   <Route path="pedidos" element={<AdminPedidos />} />
                   <Route path="pedidos/:id" element={<AdminPedidoDetalle />} />
-                  
+                  <Route path="usuarios" element={<AdminUsuarios />} />
+                  <Route path="productos" element={<AdminProducts />} />
+
                   <Route 
                     path="usuarios" 
                     element={
