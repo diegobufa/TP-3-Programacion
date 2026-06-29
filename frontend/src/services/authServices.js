@@ -1,41 +1,50 @@
-import { BASE_URL } from "../constants/productConstants";
+import { API_URL, BASE_URL } from "../constants/productConstants";
 
 export const authService = {
-  
   registro: async (datosUsuario) => {
-  const res = await fetch(`${ BASE_URL } /auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(datosUsuario)
-  });
+    const res = await fetch(`${BASE_URL}/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datosUsuario),
+    });
 
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || "Error al registrar usuario");
-  }
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.message || "Error al registrar usuario");
+    }
 
-  return res.json();
-},
+    return res.json();
+  },
 
-login: async (email, password) => {
-  const res = await fetch(`${BASE_URL}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password })
-  });
+  login: async (email, password) => {
+    const res = await fetch(`${BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || "Credenciales incorrectas");
-  }
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.message || "Credenciales incorrectas");
+    }
 
-  const token = await res.json();
-  return token;
-},
+    return res.json();
+  },
+
+  obtenerUsuarioPorId: async (id) => {
+    const res = await fetch(`${BASE_URL}/auth/me/${id}`);
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.message || "No se pudieron obtener los datos del usuario");
+    }
+
+    return res.json();
+  },
 
   getUsuarios: async (token) => {
     const res = await fetch(`${API_URL}/usuarios`, {
-      headers: { "Authorization": `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) throw new Error("No autorizado");
     return res.json();
@@ -44,11 +53,11 @@ login: async (email, password) => {
   actualizarRol: async (id, fk_rol, token) => {
     const res = await fetch(`${API_URL}/usuarios/${id}`, {
       method: "PUT",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ fk_rol })
+      body: JSON.stringify({ fk_rol }),
     });
     return res.json();
   },
@@ -56,8 +65,8 @@ login: async (email, password) => {
   eliminarUsuario: async (id, token) => {
     const res = await fetch(`${API_URL}/usuarios/${id}`, {
       method: "DELETE",
-      headers: { "Authorization": `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) throw new Error("No se pudo eliminar");
-  }
+  },
 };

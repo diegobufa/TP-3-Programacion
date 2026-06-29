@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useContext } from "react";
+import { createOrder as createOrderApi } from "../services/orderApi";
 
 const CartContext = createContext();
 
@@ -13,7 +14,6 @@ const normalizarProductoCarrito = (product) => ({
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
-  const [orders, setOrders] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const openCart = () => setIsCartOpen(true);
@@ -94,26 +94,27 @@ export const CartProvider = ({ children }) => {
   const getTotal = () => getSubtotal();
   const clearCart = () => setCart([]);
 
-  const createOrder = (customerData) => {
-    const newOrder = {
-      id: Math.floor(100000 + Math.random() * 900000).toString(),
-      date: new Date().toLocaleDateString(),
-      items: [...cart],
-      total: getTotal(),
-      customer: customerData,
-      status: "Pendiente",
+  const createOrder = async (customerData) => {
+    const pedido = {
+      fk_usuario: customerData.fk_usuario,
+      direccion_envio: customerData.direccion,
+      provincia_envio: customerData.provincia,
+      localidad_envio: customerData.localidad,
+      detalles: cart.map((item) => ({
+        fk_producto: item.id,
+        cantidad: item.quantity,
+      })),
     };
 
-    setOrders((prevOrders) => [newOrder, ...prevOrders]);
+    const nuevoPedido = await createOrderApi(pedido);
     clearCart();
-    return newOrder.id;
+    return nuevoPedido;
   };
 
   return (
     <CartContext.Provider
       value={{
         cart,
-        orders,
         isCartOpen,
         openCart,
         closeCart,

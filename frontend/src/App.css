@@ -2805,3 +2805,77 @@ img {
         font-size: 26px;
     }
 }
+/* =========================
+   CHECKOUT DATOS USUARIO
+========================= */
+
+.checkout-user-box {
+    margin-bottom: 24px;
+    padding: 18px;
+    border-radius: 14px;
+    border: 1px solid #dbeafe;
+    background: #eff6ff;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+}
+
+.checkout-user-box strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #0f172a;
+    font-size: 16px;
+}
+
+.checkout-user-box p {
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.checkout-secondary-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    background: #0f172a;
+    color: #ffffff;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.checkout-secondary-btn:hover {
+    background: #1e293b;
+}
+
+.checkout-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.checkout-form input[readonly] {
+    background: #f8fafc;
+    color: #475569;
+    cursor: default;
+}
+
+.checkout-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+@media (max-width: 768px) {
+    .checkout-user-box {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .checkout-form-row {
+        grid-template-columns: 1fr;
+    }
+}

@@ -7,7 +7,7 @@ const badgeColor = (estado) => ({
 }[estado] ?? "status-pendiente");
 
 const PedidoDetalleInfo = ({ pedido }) => {
-    const total = pedido.detalles.reduce((acc, d) => acc + d.precio_subtotal, 0);
+    const total = pedido.detalles.reduce((acc, d) => acc + Number(d.precio_subtotal), 0);
     const cantidad = pedido.detalles.reduce((acc, d) => acc + d.cantidad, 0);
 
     return (
