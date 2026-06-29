@@ -1,6 +1,13 @@
 import { useNavigate } from "react-router-dom";
+import { categorias } from "../constants/productConstants";
+
+const categoriasSitio = [
+  { label: "Catálogo", value: "Catalogo" },
+  ...categorias.map((categoria) => ({ label: categoria, value: categoria })),
+];
 
 const CategoriesNav = ({
+  categoriaSeleccionada = "Catalogo",
   setCategoriaSeleccionada,
   setMostrarTodos,
   setBusqueda,
@@ -18,24 +25,23 @@ const CategoriesNav = ({
       state: {
         categoriaSeleccionada: categoria,
         mostrarTodos: true,
+        busqueda: "",
       },
     });
   };
 
   return (
-    <nav className="categories">
-        <button onClick={() => handleCategoria("Catalogo")}>Catálogo</button>
-        <button onClick={() => handleCategoria("Tv-Audio")}>Tv-Audio</button>
-        <button onClick={() => handleCategoria("Cocinas")}>Cocinas</button>
-        <button onClick={() => handleCategoria("Tecnologia")}>Tecnología</button>
-        <button onClick={() => handleCategoria("Electrodomesticos")}>Electrodomésticos</button>
-        <button onClick={() => handleCategoria("Calefaccion")}>Calefacción</button>
-        <button onClick={() => handleCategoria("Climatizacion")}>Climatización</button>
-        <button onClick={() => handleCategoria("Heladeras")}>Heladeras</button>
-        <button onClick={() => handleCategoria("Microondas")}>Microondas</button>
-        <button onClick={() => handleCategoria("Lavarropas")}>Lavarropas</button>
-       
-      
+    <nav className="categories" aria-label="Categorías de productos">
+      {categoriasSitio.map((categoria) => (
+        <button
+          key={categoria.value}
+          type="button"
+          className={categoriaSeleccionada === categoria.value ? "active" : ""}
+          onClick={() => handleCategoria(categoria.value)}
+        >
+          {categoria.label}
+        </button>
+      ))}
     </nav>
   );
 };

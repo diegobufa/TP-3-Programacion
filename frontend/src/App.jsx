@@ -1,4 +1,3 @@
-
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
@@ -35,7 +34,7 @@ function App() {
           <AuthProvider>
             <CartSidebar />
 
-        <Routes>
+            <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/producto/:id" element={<ProductDetail />} />
               <Route path="/carrito" element={<CarritoPage />} />
@@ -51,14 +50,11 @@ function App() {
                   <Route path="dashboard" element={<AdminDashboard />} />
                   <Route path="pedidos" element={<AdminPedidos />} />
                   <Route path="pedidos/:id" element={<AdminPedidoDetalle />} />
-                  <Route path="usuarios" element={<AdminUsuarios />} />
                   <Route path="productos" element={<AdminProducts />} />
 
-                  <Route element={<ProtectedRoute allowedRoles={[3]}>
-                        <Route path="usuarios" element={<AdminUsuarios />} />
-                    </ProtectedRoute>
-                    } 
-                  />
+                  <Route element={<ProtectedRoute allowedRoles={[3]} />}>
+                    <Route path="usuarios" element={<AdminUsuarios />} />
+                  </Route>
                 </Route>
               </Route>
 

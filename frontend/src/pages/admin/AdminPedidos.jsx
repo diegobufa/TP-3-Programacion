@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PedidosTable from "../../components/adminPedidos/PedidosTable";
 import { useAdminOrders } from "../../context/AdminOrdersContext.jsx";
+import { toast } from "react-toastify";
 
 const ESTADOS = ["todos", "pendiente", "confirmado", "enviado", "entregado", "cancelado"];
 
@@ -34,9 +35,10 @@ const AdminPedidos = () => {
 
     try {
       await actualizarEstadosPedidos(cambiosEstado);
+      toast.success("Cambios guardados correctamente");
       setCambiosEstado({});
     } catch (error) {
-      alert(error.message || "No se pudieron guardar los cambios");
+      toast.error(error.message || "No se pudieron guardar los cambios");
     }
   };
 
@@ -94,7 +96,7 @@ const AdminPedidos = () => {
         </div>
       </div>
 
-      <div className="admin-actions-bar mb-3" style={{ gridTemplateColumns: "1fr 200px 200px" }}>
+      <div className="admin-actions-bar admin-orders-filters mb-3">
         <input name="cliente" placeholder="Buscar por usuario ID" value={filtros.cliente} onChange={handleFiltro} />
         <select name="estado" value={filtros.estado} onChange={handleFiltro}>
           {ESTADOS.map((estado) => (

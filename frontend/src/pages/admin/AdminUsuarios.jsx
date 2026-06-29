@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../context/authContext';
 import { authService } from '../../services/authServices';
+import { toast } from 'react-toastify';
 
 export default function AdminUsuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -36,10 +37,10 @@ export default function AdminUsuarios() {
   const handleCambiarRol = async (id, nuevoRolId) => {
     try {
       await authService.actualizarRol(id, parseInt(nuevoRolId), user.token);
-      alert('Rol actualizado de manera correcta');
+      toast.success('Rol actualizado correctamente');
       cargarUsuarios(); 
     } catch (err) { 
-      alert('Error al actualizar el rol'); 
+      toast.error('Error al actualizar el rol'); 
     }
   };
 
@@ -47,9 +48,10 @@ export default function AdminUsuarios() {
     if (window.confirm('¿Eliminar este usuario de forma definitiva?')) {
       try {
         await authService.eliminarUsuario(id, user.token);
+        toast.success('Usuario eliminado correctamente');
         cargarUsuarios();
       } catch (err) { 
-        alert('No se pudo completar la eliminación.'); 
+        toast.error('No se pudo completar la eliminación.'); 
       }
     }
   };

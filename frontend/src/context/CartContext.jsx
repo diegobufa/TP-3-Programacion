@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useContext } from "react";
 import { createOrder as createOrderApi } from "../services/orderApi";
+import { toast } from "react-toastify";
 
 const CartContext = createContext();
 
@@ -25,12 +26,12 @@ export const CartProvider = ({ children }) => {
     const stock = productoNormalizado.stock;
 
     if (!product?.id) {
-      alert("No se pudo agregar el producto al carrito.");
+      toast.error("No se pudo agregar el producto al carrito.");
       return false;
     }
 
     if (!Number.isFinite(cantidad) || cantidad <= 0) {
-      alert("La cantidad debe ser mayor a 0.");
+      toast.warning("La cantidad debe ser mayor a 0.");
       return false;
     }
 
@@ -39,7 +40,7 @@ export const CartProvider = ({ children }) => {
     const nuevaCantidad = cantidadActual + cantidad;
 
     if (nuevaCantidad > stock) {
-      alert(`No podés agregar más de este producto. Stock límite: ${stock}`);
+      toast.warning(`No podés agregar más de este producto. Stock límite: ${stock}`);
       return false;
     }
 
@@ -74,7 +75,7 @@ export const CartProvider = ({ children }) => {
     }
 
     if (cantidad > stockDisponible) {
-      alert(`Límite de stock alcanzado (${stockDisponible})`);
+      toast.warning(`Límite de stock alcanzado (${stockDisponible})`);
       return;
     }
 

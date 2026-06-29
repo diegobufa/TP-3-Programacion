@@ -3,6 +3,7 @@ import { AuthContext } from "../../context/authContext";
 import { authService } from '../../services/authServices';
 import { useNavigate, Link } from 'react-router-dom';
 import Header from '../../components/Header';
+import { toast } from 'react-toastify';
 import Footer from '../../components/Footer';
 
 export default function Login() {
@@ -30,10 +31,11 @@ export default function Login() {
     try {
       const token = await authService.login(email, password);
       loginUser(token);
-      alert('Sesión iniciada con éxito');
+      toast.success('Sesión iniciada con éxito');
       navigate('/');
     } catch (err) {
       setError(err.message);
+      toast.error(err.message || 'No se pudo iniciar sesión');
     } finally {
       setLoading(false);
     }

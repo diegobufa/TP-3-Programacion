@@ -6,22 +6,21 @@ import { AuthContext } from "../context/authContext";
 
 const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
   const navigate = useNavigate();
-
   const { openCart, cart } = useCart();
+  const { user, logoutUser } = useContext(AuthContext);
 
   const cantidadCarrito = cart.reduce(
     (acc, item) => acc + Number(item.quantity || 0),
     0,
   );
-  const { user, logoutUser } = useContext(AuthContext);
 
   const buscar = () => {
-    if (textoBusqueda.trim() === "") return;
+    const busquedaLimpia = textoBusqueda.trim();
 
-    setBusqueda(textoBusqueda);
+    setBusqueda(busquedaLimpia);
     navigate("/", {
       state: {
-        busqueda: textoBusqueda,
+        busqueda: busquedaLimpia,
         mostrarTodos: true,
         categoriaSeleccionada: "Catalogo",
       },
@@ -36,48 +35,46 @@ const Header = ({ textoBusqueda, setTextoBusqueda, setBusqueda }) => {
     }
   };
 
-
   return (
     <header className="header">
-  {/* Logo */}
-  <Link to="/" className="logo-link">
-    <h3>ElectroFest</h3>
-  </Link>
+      <Link to="/" className="logo-link" aria-label="Ir al inicio">
+        <h3>ElectroFest</h3>
+      </Link>
 
-  {/* 1. Buscador (Contenedor Flexible) */}
-  <div className="search-container">
-    <input
-      type="text"
-      placeholder="Buscar producto"
-      value={textoBusqueda}
-      onChange={(e) => setTextoBusqueda(e.target.value)}
-      onKeyDown={handleKeyDown}
-    />
-    <button className="search-btn" onClick={buscar} type="button">
-      <FaSearch />
-    </button>
-  </div>
-
-  {/* 2. Autenticación (Contenedor con prioridad de espacio fijo) */}
-  <div className="auth-buttons-container">
-    {!user ? (
-      <button onClick={() => navigate("/login")} className="login-btn">
-        Ingresar
-      </button>
-    ) : (
-      <>
-        {user && [2, 3].includes(user.fk_rol) && (
-          <Link to="/admin" className="login-btn admin-panel-btn">
-            ⚙️ Panel Admin
-          </Link>
-        )}
-        <span className="user-email-display">{user.email}</span>
-        <button onClick={logoutUser} className="logout-btn">
-          Cerrar Sesión
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Buscar producto"
+          value={textoBusqueda}
+          onChange={(e) => setTextoBusqueda(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <button className="search-btn" onClick={buscar} type="button" aria-label="Buscar">
+          <FaSearch />
         </button>
-      </>
-    )}
-  </div>
+      </div>
+
+      <div className="auth-buttons-container">
+        {!user ? (
+          <button onClick={() => navigate("/login")} className="login-btn" type="button">
+            Ingresar
+          </button>
+        ) : (
+          <>
+            {[2, 3].includes(Number(user.fk_rol)) && (
+              <Link to="/admin" className="login-btn admin-panel-btn">
+                ⚙️ Panel Admin
+              </Link>
+            )}
+            <span className="user-email-display" title={user.email}>
+              {user.email}
+            </span>
+            <button onClick={logoutUser} className="logout-btn" type="button">
+              Salir
+            </button>
+          </>
+        )}
+      </div>
 
       <div className="cart-btn">
         <button
