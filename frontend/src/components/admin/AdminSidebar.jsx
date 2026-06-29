@@ -4,7 +4,7 @@ import {
   FaTags,
   FaUsers
 } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 
@@ -24,7 +24,17 @@ const AdminSidebar = ({ abierto, onCerrar }) => {
       />
     )}
     <aside className={`admin-sidebar admin-sidebar-drawer ${abierto ? "admin-sidebar-open" : ""}`}>
-      <div className="admin-logo"><h2>ElectroFest</h2></div>
+      <div className="admin-logo"><Link
+        to="/"
+        state={{
+          categoriaSeleccionada: "Catalogo",
+          mostrarTodos: false,
+          busqueda: "",
+        }}
+        className="logo-link"
+      >
+        <h2>ElectroFest</h2>
+      </Link></div>
 
       <div className="admin-user">
         <div className="admin-avatar">A</div>
