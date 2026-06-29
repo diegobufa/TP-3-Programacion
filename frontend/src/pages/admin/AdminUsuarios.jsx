@@ -65,7 +65,7 @@ return (
   <div className="admin-container" style={{ padding: '24px', background: '#ffffff', borderRadius: '14px', boxShadow: '0 4px 12px rgba(15, 23, 42, 0.04)', border: '1px solid #e2e8f0' }}>
     <div style={{ marginBottom: '24px', borderBottom: '1px solid #f1f5f9', paddingBottom: '16px' }}>
       <h2 style={{ fontSize: '24px', fontWeight: '800', color: '#0f172a', margin: 0 }}>Gestión de Usuarios y Roles</h2>
-      <p style={{ color: '#64748b', fontSize: '14px', margin: '4px 0 0' }}>Panel exclusivo de Superadministración para ElectroFest</p>
+      <p style={{ color: '#64748b', fontSize: '14px', margin: '4px 0 0' }}>Panel exclusivo de Superadministración</p>
     </div>
 
     {error && (
